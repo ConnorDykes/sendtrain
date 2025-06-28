@@ -1,0 +1,167 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+ANALYZE: the image/images pasted
+OBJECTIVE
+Extract a comprehensive and reusable design system from the image pasted, excluding any specific visual content, to create a
+JSON reference that developers or AI systems can use as a styling foundation for consistent UI development.
+
+INSTRUCTIONS
+Examine the image pasted to identify:
+• Color schemes and palettes
+• Font hierarchies and typography standards
+• Spacing and margin conventions
+• Structural layouts (grid systems, card designs, wrapper elements, etc.)
+• Interactive elements (button styles, form inputs, data tables, etc.)
+• Visual effects (corner rounding, drop shadows, and additional styling treatments)
+Generate a design-system.json file that systematically documents these design principles and enables consistent visual language reproduction.
+Save the JSON output to the designs directory using filename: design.json
+
+REQUIREMENTS
+- The output MUST be a single JSON object.
+- All values should be represented as strings (e.g., "16px", "#FFFFFF").
+- If a specific property cannot be determined from the image, use a sensible default or "N/A".
+- The JSON structure must follow the schema defined in the RESPONSE FORMAT section precisely.
+- Add the JSON file in a filder called Styles Guides as style_guide.json
+
+The JSON object must contain the following top-level keys:
+1.  `colorPalette`: An object containing color categories.
+    -   `primary`: Main brand or action color.
+    -   `secondary`: Supporting color.
+    -   `accent`: Color for highlights and special elements.
+    -   `neutrals`: A map of shades from light to dark (e.g., "white", "lightGray", "darkGray", "black").
+    -   `semantic`: Colors for states like "success", "error", "warning", "info".
+2.  `typography`: An object defining text styles.
+    -   `fontFamily`: The primary font family used. If multiple, specify the main one.
+    -   `headings`: An object for `h1`, `h2`, `h3` with `fontSize`, `fontWeight`, and `lineHeight`.
+    -   `body`: An object for default text with `fontSize`, `fontWeight`, and `lineHeight`.
+    -   `caption`: An object for smaller, secondary text.
+3.  `spacing`: An object defining the spacing scale.
+    -   `baseUnit`: The base value (e.g., "8px") from which others are derived.
+    -   `scale`: An object with keys like `xs`, `sm`, `md`, `lg`, `xl` and their corresponding pixel or rem values.
+4.  `layout`: An object describing containers and grids.
+    -   `containerMaxWidth`: The maximum width of the main content area.
+    -   `grid`: An object with `columns` (e.g., 12) and `gap` (e.g., "16px").
+5.  `components`: An object detailing styles for common UI elements.
+    -   `button`: Objects for `primary` and `secondary` variants, including `backgroundColor`, `color`, `padding`, `borderRadius`, and `boxShadow`.
+    -   `input`: An object for form input fields, including `border`, `borderRadius`, `padding`, `backgroundColor`, and `focusRing`.
+    -   `card`: An object for card components, including `backgroundColor`, `borderRadius`, `padding`, and `boxShadow`.
+6.  `effects`: An object for visual styling details.
+    -   `cornerRadius`: A scale for border-radius values (e.g., `sm`, `md`, `lg`).
+    -   `shadows`: A map of shadow styles (e.g., `sm`, `md`, `lg`) with their `box-shadow` CSS values.
+
+RESPONSE FORMAT
+```json
+{
+  "colorPalette": {
+    "primary": "#4A90E2",
+    "secondary": "#50E3C2",
+    "accent": "#F5A623",
+    "neutrals": {
+      "white": "#FFFFFF",
+      "lightGray": "#F8F9FA",
+      "gray": "#E9ECEF",
+      "darkGray": "#6C757D",
+      "black": "#212529"
+    },
+    "semantic": {
+      "success": "#28A745",
+      "error": "#DC3545",
+      "warning": "#FFC107",
+      "info": "#17A2B8"
+    }
+  },
+  "typography": {
+    "fontFamily": "Inter, sans-serif",
+    "headings": {
+      "h1": {
+        "fontSize": "48px",
+        "fontWeight": "700",
+        "lineHeight": "1.2"
+      },
+      "h2": {
+        "fontSize": "32px",
+        "fontWeight": "700",
+        "lineHeight": "1.3"
+      },
+      "h3": {
+        "fontSize": "24px",
+        "fontWeight": "600",
+        "lineHeight": "1.4"
+      }
+    },
+    "body": {
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "1.6"
+    },
+    "caption": {
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "lineHeight": "1.5"
+    }
+  },
+  "spacing": {
+    "baseUnit": "8px",
+    "scale": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "xxl": "48px"
+    }
+  },
+  "layout": {
+    "containerMaxWidth": "1200px",
+    "grid": {
+      "columns": "12",
+      "gap": "24px"
+    }
+  },
+  "components": {
+    "button": {
+      "primary": {
+        "backgroundColor": "#4A90E2",
+        "color": "#FFFFFF",
+        "padding": "12px 24px",
+        "borderRadius": "8px",
+        "boxShadow": "0 2px 4px rgba(0,0,0,0.1)"
+      },
+      "secondary": {
+        "backgroundColor": "transparent",
+        "color": "#4A90E2",
+        "padding": "12px 24px",
+        "borderRadius": "8px",
+        "border": "1px solid #4A90E2"
+      }
+    },
+    "input": {
+      "border": "1px solid #CED4DA",
+      "borderRadius": "8px",
+      "padding": "12px 16px",
+      "backgroundColor": "#FFFFFF",
+      "focusRing": "0 0 0 2px rgba(74, 144, 226, 0.25)"
+    },
+    "card": {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": "16px",
+      "padding": "24px",
+      "boxShadow": "0 4px 12px rgba(0,0,0,0.08)"
+    }
+  },
+  "effects": {
+    "cornerRadius": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "16px"
+    },
+    "shadows": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+    }
+  }
+}
