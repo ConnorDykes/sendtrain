@@ -1,10 +1,116 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sendtrain/providers/app_state_provider.dart';
+import 'package:sendtrain/services/firebase_auth_service.dart';
+import 'package:sendtrain/services/firestore_service.dart';
+import 'package:sendtrain/signup_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  ConsumerState<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends ConsumerState<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
+  bool _isAppleLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message ?? 'Login failed')));
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _signInWithApple() async {
+    setState(() {
+      _isAppleLoading = true;
+    });
+
+    try {
+      final authService = ref.read(firebaseAuthServiceProvider);
+      final error = await authService.signInWithApple();
+
+      if (mounted) {
+        if (error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        } else {
+          print('✅ Apple Sign-In successful, manually checking user state...');
+
+          // Manual trigger to check auth state in case automatic detection failed
+          final currentUser = FirebaseAuth.instance.currentUser;
+          if (currentUser != null) {
+            print('🔍 Manual check: Firebase user exists: ${currentUser.uid}');
+
+            // Manually fetch and set user state
+            final firestoreService = ref.read(firestoreServiceProvider);
+            final appUser = await firestoreService.fetchUser(currentUser.uid);
+
+            if (appUser != null) {
+              print('🔍 Manual check: Firestore user found, setting app state');
+              ref.read(appStateProvider.notifier).setUser(appUser);
+            } else {
+              print('🔍 Manual check: Firestore user not found');
+            }
+          } else {
+            print('🔍 Manual check: No Firebase user found');
+          }
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Apple Sign-In failed: ${e.toString()}'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAppleLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +149,17 @@ class LoginPage extends StatelessWidget {
                       children: [
                         _buildTitle(theme),
                         const SizedBox(height: 8),
-                        Text(
-                          'Sign in to continue',
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: Colors.white70,
-                          ),
-                        ),
                         const SizedBox(height: 32),
-                        _buildTextField(hint: 'Email'),
+                        _buildTextField(
+                          controller: _emailController,
+                          hint: 'Email',
+                        ),
                         const SizedBox(height: 16),
-                        _buildTextField(hint: 'Password', obscure: true),
+                        _buildTextField(
+                          controller: _passwordController,
+                          hint: 'Password',
+                          obscure: true,
+                        ),
                         const SizedBox(height: 32),
                         _buildLoginButton(theme),
                         const SizedBox(height: 24),
@@ -77,21 +183,23 @@ class LoginPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'SENDTR',
+          'Sendtr',
           style: theme.textTheme.displayLarge?.copyWith(color: Colors.white),
         ),
         Text(
-          'a',
-          style: theme.textTheme.displayLarge
-              ?.copyWith(color: theme.colorScheme.secondary),
+          'A',
+          style: theme.textTheme.displayLarge?.copyWith(
+            color: theme.colorScheme.secondary,
+          ),
         ),
         Text(
-          'i',
-          style: theme.textTheme.displayLarge
-              ?.copyWith(color: theme.colorScheme.secondary),
+          'I',
+          style: theme.textTheme.displayLarge?.copyWith(
+            color: theme.colorScheme.secondary,
+          ),
         ),
         Text(
-          'N',
+          'n',
           style: theme.textTheme.displayLarge?.copyWith(color: Colors.white),
         ),
       ],
@@ -135,8 +243,13 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField({required String hint, bool obscure = false}) {
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hint,
+    bool obscure = false,
+  }) {
     return TextField(
+      controller: controller,
       obscureText: obscure,
       style: const TextStyle(color: Colors.white),
       cursorColor: Colors.white,
@@ -164,12 +277,21 @@ class LoginPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: _isLoading ? null : _login,
         style: theme.elevatedButtonTheme.style?.copyWith(
           backgroundColor: WidgetStateProperty.all(Colors.transparent),
           shadowColor: WidgetStateProperty.all(Colors.transparent),
         ),
-        child: const Text('LOGIN'),
+        child: _isLoading
+            ? const SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : const Text('LOGIN'),
       ),
     );
   }
@@ -179,10 +301,9 @@ class LoginPage extends StatelessWidget {
       children: [
         Text(
           "Or sign in with",
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: Colors.white70),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
         ),
         const SizedBox(height: 16),
         Row(
@@ -191,12 +312,14 @@ class LoginPage extends StatelessWidget {
             _buildSocialButton(
               asset: _getGoogleIconSvg(),
               onTap: () {},
+              isLoading: false,
             ),
             const SizedBox(width: 16),
             if (Platform.isIOS)
               _buildSocialButton(
                 asset: _getAppleIconSvg(),
-                onTap: () {},
+                onTap: _signInWithApple,
+                isLoading: _isAppleLoading,
               ),
           ],
         ),
@@ -204,10 +327,13 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSocialButton(
-      {required String asset, required VoidCallback onTap}) {
+  Widget _buildSocialButton({
+    required String asset,
+    required VoidCallback onTap,
+    required bool isLoading,
+  }) {
     return InkWell(
-      onTap: onTap,
+      onTap: isLoading ? null : onTap,
       borderRadius: BorderRadius.circular(10),
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -215,11 +341,16 @@ class LoginPage extends StatelessWidget {
           color: Colors.white.withOpacity(0.2),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: SvgPicture.string(
-          asset,
-          height: 30,
-          width: 30,
-        ),
+        child: isLoading
+            ? const SizedBox(
+                height: 30,
+                width: 30,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : SvgPicture.string(asset, height: 30, width: 30),
       ),
     );
   }
@@ -243,13 +374,17 @@ class LoginPage extends StatelessWidget {
       children: [
         Text(
           "No account?",
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: Colors.white70),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SignUpPage()),
+            );
+          },
           child: const Text('Sign up'),
         ),
       ],

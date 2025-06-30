@@ -3,15 +3,12 @@ description:
 globs: 
 alwaysApply: false
 ---
-UI TO BUILD: $ARGUMENTS
+
 OBJECTIVE
 Launch 5 concurrent sub-agents in parallel to develop a single UI concept with different approaches,
+Enabling users to compare options and select the most effective solution;
 
-Enabling users to compare options and
-select the most effective
-solution;
-Instructions for each sub-agent
-
+Instructions for each sub-agent:
 Review the styling specifications in lib/style_guide.json, along with reference mockups for guidance
 Construct
 a standalone Flutter widgets or or groups of Widgets featuring one interface screen that

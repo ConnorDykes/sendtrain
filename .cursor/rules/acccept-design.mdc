@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+OBJECTIVE
+When a user accopot a design you should rename it ans move it to the corrrect file or filder
+
+INSTRUCTIONS
+the user will supply the same of a file in the  lib/agent_mockups folder. You will then rename the widget or widgets in side to not have a number in their name. Rename them any place in the app they are being used, rename the file to no include a number , and move the file to the lib folder. Then delete all the other files in the agen mock ups folder with the same file name but a different number for example if the user accepts login_page_2.dart then delete login_page_1.dart, login_page_3.dart, and so on until there are no login page files in agent_mockups. the file wouldbe renamed to login_page.dart and the Widget inside called LoginPage2 would be remaned to LoginPage.
+
+Also remove any refrence to the other widets that were not accepted and chagne them to the new widget and remove any imports related to the files we delete. Update any existing imports for the old file into the new accepted file location and name. 

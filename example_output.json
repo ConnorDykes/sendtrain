@@ -1,0 +1,946 @@
+{
+    "programTitle": "16-Week Elite Sport Climbing Performance Program",
+    "programFocus": "Power-Endurance for Elite Sport Climbing (5.14+ Focus)",
+    "durationWeeks": 16,
+    "programDescripton": "This 16-week program is designed for an elite sport climber aiming to push their redpoint grade. It follows a periodized structure, starting with a foundation of strength and power, transitioning into sport-specific power-endurance, and culminating in a performance phase dedicated to redpointing a goal project. The program is built for 3-4 sessions per week to accommodate a busy schedule, emphasizing high-quality, focused training over sheer volume.",
+    "programNotes": {
+      "safetyDisclaimer": "Always consult with a healthcare professional before beginning any new training program. The loads and intensities described are for an elite-level athlete and should be adjusted based on your body's feedback. Pay close attention to your fingers, elbows, and shoulders. Do not train through sharp or persistent pain.",
+      "injuryModifications": "No injuries were reported. However, given the high intensity of this program, it is crucial to proactively manage recovery and listen to your body. If pain develops, especially in soft tissues, reduce intensity, take extra rest, and consult a qualified physical therapist.",
+      "assumptionsMade": "This program assumes you have access to a commercial climbing gym with extensive bouldering, sport climbing routes, a spray wall, a fingerboard, and a standard set of strength training equipment (e.g., free weights, pull-up bars). It also assumes that due to your stated time constraints (family and full-time job), each session should be highly focused and completed within approximately 2-2.5 hours. The weekly schedule is a template (Mon/Wed/Fri); adjust the days to fit your personal schedule, but ensure at least one full rest day between high-intensity sessions."
+    },
+    "weeklySchedule": [
+      {
+        "week": 1,
+        "phase": "Strength & Power Phase",
+        "weeklyFocus": "Build foundational max strength and power. Focus on high-quality attempts on limit-level boulders and supplemental strength exercises. Prioritize perfect form and full recovery between attempts.",
+        "dailySessions": [
+          {
+            "sessionNumber": 1,
+            "dayOfTheWeek": "Monday",
+            "sessionType": "Climbing & Strength",
+            "sessionFocus": "Limit Bouldering & Max Strength",
+            "warmUp": {
+              "durationMinutes": 25,
+              "exercises": [
+                {
+                  "exerciseName": "Cardio",
+                  "details": "Light rowing or cycling to elevate heart rate.",
+                  "requiredEquipment": "Rowing machine or stationary bike",
+                  "sets": "1",
+                  "reps": "5-10 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "Adjust duration based on how you feel."
+                },
+                {
+                  "exerciseName": "Dynamic Stretching & Mobility",
+                  "details": "Perform controlled movements: arm circles, leg swings, hip circles, cat-cow, thoracic spine rotations.",
+                  "requiredEquipment": "None",
+                  "sets": "1",
+                  "reps": "10-12 per movement",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "5",
+                  "howToAdjust": "Focus on areas that feel particularly tight."
+                },
+                {
+                  "exerciseName": "Easy Bouldering",
+                  "details": "Climb 10-15 easy boulder problems, focusing on precise movement and fluid motion. Gradually increase difficulty from V0 to V5.",
+                  "requiredEquipment": "Bouldering wall",
+                  "sets": "N/A",
+                  "reps": "10-15 problems",
+                  "rest": "As needed",
+                  "intensity": "Low, RPE 3-5/10",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "Climb fewer problems if short on time, but ensure you feel warm and activated."
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 75,
+              "exercises": [
+                {
+                  "exerciseName": "Limit Bouldering Project",
+                  "details": "Select 1-2 boulder problems at or slightly above your redpoint grade (V11+). Work the individual moves and short links. The goal is recruitment, not sending.",
+                  "requiredEquipment": "Bouldering wall",
+                  "sets": "N/A",
+                  "reps": "Focus on 5-8 high-quality attempts on crux moves.",
+                  "rest": "3-5 minutes between attempts",
+                  "intensity": "Maximal, RPE 9-10/10",
+                  "estimatedCompletionTime": "45",
+                  "howToAdjust": "If a move feels impossible, find a slightly easier but similar problem. If it feels too easy, find a harder project."
+                },
+                {
+                  "exerciseName": "Weighted Pull-ups",
+                  "details": "Use a weight that makes 3-5 reps challenging but possible with good form (no kipping).",
+                  "requiredEquipment": "Pull-up bar, weight belt, weights",
+                  "sets": "3",
+                  "reps": "3-5",
+                  "rest": "3 minutes",
+                  "intensity": "High, RPE 8-9/10",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "Increase weight if you can do more than 5 reps. Decrease weight if form breaks down."
+                },
+                {
+                  "exerciseName": "Hanging Leg Raises",
+                  "details": "From a dead hang, raise your legs as high as possible while keeping them straight. Control the negative.",
+                  "requiredEquipment": "Pull-up bar",
+                  "sets": "3",
+                  "reps": "8-12",
+                  "rest": "2 minutes",
+                  "intensity": "High",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "Easier: Bend your knees. Harder: Perform toes-to-bar raises."
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 15,
+              "activities": [
+                {
+                  "exerciseName": "Light Cardio",
+                  "details": "Easy cycling or walking to flush lactic acid.",
+                  "requiredEquipment": "Stationary bike or treadmill",
+                  "sets": "1",
+                  "reps": "5 minutes",
+                  "rest": "N/A",
+                  "intensity": "Very Low",
+                  "estimatedCompletionTime": "5",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Static Stretching",
+                  "details": "Hold stretches for major muscle groups: forearms (flexors/extensors), lats, chest, shoulders, and hips.",
+                  "requiredEquipment": "None",
+                  "sets": "1",
+                  "reps": "30-45 second hold per stretch",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "Ease into the stretch; it should not be painful."
+                }
+              ]
+            }
+          },
+          {
+            "sessionNumber": 2,
+            "dayOfTheWeek": "Wednesday",
+            "sessionType": "Climbing & Strength",
+            "sessionFocus": "Power Capacity & Antagonist",
+            "warmUp": {
+              "durationMinutes": 20,
+              "exercises": [
+                {
+                  "exerciseName": "Cardio & Mobility",
+                  "details": "5 mins of rowing followed by dynamic stretches (arm/leg swings, torso twists).",
+                  "requiredEquipment": "Rowing machine",
+                  "sets": "1",
+                  "reps": "5 mins cardio, 5 mins mobility",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Progressive Bouldering",
+                  "details": "Climb 8-10 problems, starting very easy and building to your onsight grade (V9). Focus on movement quality.",
+                  "requiredEquipment": "Bouldering wall",
+                  "sets": "N/A",
+                  "reps": "8-10 problems",
+                  "rest": "As needed",
+                  "intensity": "Low to High",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "Spend more time on the harder end of the warm-up to prepare for the main session."
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 80,
+              "exercises": [
+                {
+                  "exerciseName": "Hard Bouldering Volume",
+                  "details": "Climb 6-8 different boulder problems in the V9-V10 range. These should be challenging but doable within 2-4 attempts.",
+                  "requiredEquipment": "Bouldering wall",
+                  "sets": "N/A",
+                  "reps": "6-8 problems",
+                  "rest": "2-3 minutes between attempts and problems",
+                  "intensity": "High, RPE 8/10",
+                  "estimatedCompletionTime": "50",
+                  "howToAdjust": "If you can't send in 4 attempts, lower the grade. If sending first-try, increase the grade."
+                },
+                {
+                  "exerciseName": "Dumbbell Overhead Press",
+                  "details": "Standing or seated, press dumbbells overhead until arms are fully extended. Maintain a stable core.",
+                  "requiredEquipment": "Dumbbells",
+                  "sets": "3",
+                  "reps": "8-10",
+                  "rest": "2 minutes",
+                  "intensity": "Moderate",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "Adjust weight to hit the target rep range with good form."
+                },
+                {
+                  "exerciseName": "Push-ups",
+                  "details": "Standard push-ups with a focus on full range of motion.",
+                  "requiredEquipment": "None",
+                  "sets": "3",
+                  "reps": "15-20",
+                  "rest": "2 minutes",
+                  "intensity": "Moderate",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "Harder: Elevate feet. Easier: Perform on knees."
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 15,
+              "activities": [
+                {
+                  "exerciseName": "Light Activity",
+                  "details": "Very easy bouldering (V0-V1) or light cycling.",
+                  "requiredEquipment": "Bouldering wall or bike",
+                  "sets": "1",
+                  "reps": "5-10 minutes",
+                  "rest": "N/A",
+                  "intensity": "Very Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Static Stretching",
+                  "details": "Hold stretches for forearms, lats, chest, shoulders.",
+                  "requiredEquipment": "None",
+                  "sets": "1",
+                  "reps": "30-45 second hold per stretch",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "5",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            }
+          },
+          {
+            "sessionNumber": 3,
+            "dayOfTheWeek": "Friday",
+            "sessionType": "Endurance & Mobility",
+            "sessionFocus": "Aerobic Capacity & Active Recovery",
+            "warmUp": {
+              "durationMinutes": 15,
+              "exercises": [
+                {
+                  "exerciseName": "Cardio & Mobility",
+                  "details": "5 mins of light jogging or cycling, followed by dynamic stretches focusing on hips and shoulders.",
+                  "requiredEquipment": "Treadmill or bike",
+                  "sets": "1",
+                  "reps": "10 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Easy Traversing",
+                  "details": "Traverse on a large, easy-angled wall, focusing on smooth transitions and footwork.",
+                  "requiredEquipment": "Climbing wall",
+                  "sets": "1",
+                  "reps": "5 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "5",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 60,
+              "exercises": [
+                {
+                  "exerciseName": "Aerobic Restoration & Capillarity (ARC)",
+                  "details": "Climb continuously on easy terrain (5.9-5.10d) without getting pumped. The goal is to stay just below your aerobic threshold. You should be able to hold a conversation. Downclimb or traverse as needed.",
+                  "requiredEquipment": "Sport climbing wall or large bouldering wall",
+                  "sets": "2",
+                  "reps": "20-25 minutes of continuous climbing",
+                  "rest": "10 minutes",
+                  "intensity": "Low, RPE 3-4/10",
+                  "estimatedCompletionTime": "60",
+                  "howToAdjust": "If you get pumped, choose easier terrain. If it feels too easy and your heart rate is very low, find slightly more continuous or steeper terrain."
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 20,
+              "activities": [
+                {
+                  "exerciseName": "Full Body Static Stretching",
+                  "details": "A comprehensive stretching routine covering all major muscle groups: neck, shoulders, chest, back, forearms, hips, quads, hamstrings, calves.",
+                  "requiredEquipment": "None",
+                  "sets": "1",
+                  "reps": "30 seconds per stretch",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "20",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "week": 5,
+        "phase": "Power Endurance Phase",
+        "weeklyFocus": "Introduce power-endurance work. Translate strength gains into the ability to perform multiple hard moves consecutively. Maintain top-end strength with a smaller dose of limit bouldering.",
+        "dailySessions": [
+          {
+            "sessionNumber": 1,
+            "dayOfTheWeek": "Monday",
+            "sessionType": "Climbing",
+            "sessionFocus": "Power Endurance Intervals",
+            "warmUp": {
+              "durationMinutes": 25,
+              "exercises": [
+                {
+                  "exerciseName": "Cardio & Mobility",
+                  "details": "5 mins rowing, 5 mins dynamic stretches (focus on hips/shoulders).",
+                  "requiredEquipment": "Rowing machine",
+                  "sets": "1",
+                  "reps": "10 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Spray Wall Activation",
+                  "details": "Climb on a spray wall, making up progressively harder sequences of 5-8 moves. Build up to V7-V8 intensity.",
+                  "requiredEquipment": "Spray wall",
+                  "sets": "N/A",
+                  "reps": "15 minutes",
+                  "rest": "As needed",
+                  "intensity": "Low to High",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "Focus on moves that mimic your project style."
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 75,
+              "exercises": [
+                {
+                  "exerciseName": "Linked Boulder Circuits",
+                  "details": "Create and climb a 15-20 move boulder circuit on a spray wall or steep board. The difficulty should be around 5.13b/c. The goal is to complete the circuit.",
+                  "requiredEquipment": "Spray wall or steep bouldering wall",
+                  "sets": "4-5",
+                  "reps": "1 full circuit",
+                  "rest": "8-10 minutes (full recovery)",
+                  "intensity": "High, RPE 8-9/10",
+                  "estimatedCompletionTime": "50",
+                  "howToAdjust": "Harder: Add more moves, use smaller holds, or reduce rest. Easier: Break the circuit into two halves or use better holds."
+                },
+                {
+                  "exerciseName": "Plank Complex",
+                  "details": "Cycle through front plank, left side plank, and right side plank without rest.",
+                  "requiredEquipment": "None",
+                  "sets": "3",
+                  "reps": "1 minute each position (3 mins total)",
+                  "rest": "2 minutes",
+                  "intensity": "High",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "Harder: Add weight to your back or lift a limb. Easier: Reduce hold time to 30-45 seconds."
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 15,
+              "activities": [
+                {
+                  "exerciseName": "Light Cardio & Stretching",
+                  "details": "5 mins easy cycling, followed by 10 mins of static stretching for forearms, lats, and shoulders.",
+                  "requiredEquipment": "Bike, None",
+                  "sets": "1",
+                  "reps": "N/A",
+                  "rest": "N/A",
+                  "intensity": "Very Low",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            }
+          },
+          {
+            "sessionNumber": 2,
+            "dayOfTheWeek": "Wednesday",
+            "sessionType": "Climbing & Strength",
+            "sessionFocus": "Strength Maintenance & Antagonist",
+            "warmUp": {
+              "durationMinutes": 20,
+              "exercises": [
+                {
+                  "exerciseName": "Cardio & Mobility",
+                  "details": "5 mins rowing, 5 mins dynamic stretches.",
+                  "requiredEquipment": "Rowing machine",
+                  "sets": "1",
+                  "reps": "10 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Progressive Bouldering",
+                  "details": "Climb 8-10 problems from V0 up to V9.",
+                  "requiredEquipment": "Bouldering wall",
+                  "sets": "N/A",
+                  "reps": "10 minutes",
+                  "rest": "As needed",
+                  "intensity": "Low to High",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 80,
+              "exercises": [
+                {
+                  "exerciseName": "Limit Bouldering (Maintenance)",
+                  "details": "Work on your limit project from the previous phase for a short duration to maintain max power.",
+                  "requiredEquipment": "Bouldering wall",
+                  "sets": "N/A",
+                  "reps": "3-4 high-quality attempts",
+                  "rest": "3-5 minutes",
+                  "intensity": "Maximal, RPE 9-10/10",
+                  "estimatedCompletionTime": "25",
+                  "howToAdjust": "Keep this short and focused; it's a supplement, not the main goal of this phase."
+                },
+                {
+                  "exerciseName": "Weighted Pull-ups",
+                  "details": "Use the same weight and rep scheme as the Strength Phase to maintain strength.",
+                  "requiredEquipment": "Pull-up bar, weight belt, weights",
+                  "sets": "3",
+                  "reps": "3-5",
+                  "rest": "3 minutes",
+                  "intensity": "High",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "Do not increase the weight from the previous phase; the goal is maintenance."
+                },
+                {
+                  "exerciseName": "Barbell Bench Press",
+                  "details": "Standard barbell bench press to work antagonist pushing muscles.",
+                  "requiredEquipment": "Bench, barbell, weights",
+                  "sets": "3",
+                  "reps": "6-8",
+                  "rest": "2-3 minutes",
+                  "intensity": "Moderate",
+                  "estimatedCompletionTime": "20",
+                  "howToAdjust": "Adjust weight to hit the target rep range with good form."
+                },
+                {
+                  "exerciseName": "Face Pulls",
+                  "details": "Using a cable machine or resistance bands, pull the rope towards your face, retracting your scapula.",
+                  "requiredEquipment": "Cable machine or resistance bands",
+                  "sets": "3",
+                  "reps": "12-15",
+                  "rest": "90 seconds",
+                  "intensity": "Low-Moderate",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "Focus on the squeeze between your shoulder blades."
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 15,
+              "activities": [
+                {
+                  "exerciseName": "Static Stretching",
+                  "details": "Hold stretches for chest, lats, shoulders, and forearms.",
+                  "requiredEquipment": "None",
+                  "sets": "1",
+                  "reps": "30-45 second hold per stretch",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            }
+          },
+          {
+            "sessionNumber": 3,
+            "dayOfTheWeek": "Friday",
+            "sessionType": "Climbing",
+            "sessionFocus": "Route Endurance",
+            "warmUp": {
+              "durationMinutes": 25,
+              "exercises": [
+                {
+                  "exerciseName": "Cardio & Mobility",
+                  "details": "5 mins cycling, 5 mins dynamic stretches.",
+                  "requiredEquipment": "Bike",
+                  "sets": "1",
+                  "reps": "10 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Easy Routes",
+                  "details": "Climb 2-3 easy routes, building in grade from ~5.10 to ~5.11c.",
+                  "requiredEquipment": "Sport climbing wall",
+                  "sets": "N/A",
+                  "reps": "2-3 routes",
+                  "rest": "As needed",
+                  "intensity": "Low-Moderate",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 80,
+              "exercises": [
+                {
+                  "exerciseName": "Hard Route Burns",
+                  "details": "Select a route at or just below your onsight grade (5.12c/d). Climb it 3 times, with the goal of improving your efficiency and decreasing pump on each burn. Rest fully between burns.",
+                  "requiredEquipment": "Sport climbing wall",
+                  "sets": "3",
+                  "reps": "1 full route",
+                  "rest": "15-20 minutes",
+                  "intensity": "High, RPE 8/10",
+                  "estimatedCompletionTime": "80",
+                  "howToAdjust": "If the route is too hard, choose an easier one. If it feels too easy, find a slightly harder route or try to link it into an easier route afterwards."
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 15,
+              "activities": [
+                {
+                  "exerciseName": "Light Cardio & Stretching",
+                  "details": "5 mins easy walking/cycling, followed by 10 mins of full-body static stretching.",
+                  "requiredEquipment": "Treadmill/Bike, None",
+                  "sets": "1",
+                  "reps": "N/A",
+                  "rest": "N/A",
+                  "intensity": "Very Low",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "week": 9,
+        "phase": "Performance & Peaking Phase",
+        "weeklyFocus": "Begin shifting towards performance. Decrease overall training volume and increase intensity on specific route-based objectives. Simulate redpoint burns on hard routes to prepare for the final projecting phase.",
+        "dailySessions": [
+          {
+            "sessionNumber": 1,
+            "dayOfTheWeek": "Monday",
+            "sessionType": "Climbing",
+            "sessionFocus": "Mock Redpoint Session",
+            "warmUp": {
+              "durationMinutes": 30,
+              "exercises": [
+                {
+                  "exerciseName": "Cardio & Mobility",
+                  "details": "5 mins rowing, 10 mins comprehensive dynamic stretching routine.",
+                  "requiredEquipment": "Rowing machine",
+                  "sets": "1",
+                  "reps": "15 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Progressive Warm-up on Project",
+                  "details": "Climb 2 easy routes (5.10, 5.11). Then, move to a project-level route (5.13d-5.14a) and work the moves individually, finishing with one clean ascent of the first half.",
+                  "requiredEquipment": "Sport climbing wall",
+                  "sets": "N/A",
+                  "reps": "N/A",
+                  "rest": "As needed",
+                  "intensity": "Low to High",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "Your warm-up should be specific to the day's goal. Feel out the holds and moves on your target route."
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 70,
+              "exercises": [
+                {
+                  "exerciseName": "Redpoint Simulation",
+                  "details": "Select a route that could be a potential project (e.g., a hard 5.13d or a doable 5.14a). After warming up and working the moves, give 2-3 true redpoint attempts from the ground with the intention to send.",
+                  "requiredEquipment": "Sport climbing wall",
+                  "sets": "2-3",
+                  "reps": "1 redpoint attempt",
+                  "rest": "20-30 minutes (full mental and physical recovery)",
+                  "intensity": "Maximal, RPE 10/10",
+                  "estimatedCompletionTime": "70",
+                  "howToAdjust": "The goal is to simulate a real performance. If you send, great! If not, analyze why (e.g., pump, power, beta error) and take notes. Do not add more attempts; quality over quantity."
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 15,
+              "activities": [
+                {
+                  "exerciseName": "Light Activity & Stretching",
+                  "details": "5 mins of very light bouldering (V0), followed by 10 mins of gentle static stretching for key areas.",
+                  "requiredEquipment": "Bouldering wall, None",
+                  "sets": "1",
+                  "reps": "N/A",
+                  "rest": "N/A",
+                  "intensity": "Very Low",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            }
+          },
+          {
+            "sessionNumber": 2,
+            "dayOfTheWeek": "Wednesday",
+            "sessionType": "Climbing & Strength",
+            "sessionFocus": "Power Maintenance & Antagonist",
+            "warmUp": {
+              "durationMinutes": 20,
+              "exercises": [
+                {
+                  "exerciseName": "Cardio & Mobility",
+                  "details": "10 minutes of light cardio and dynamic movement.",
+                  "requiredEquipment": "Any cardio machine",
+                  "sets": "1",
+                  "reps": "10 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Light Bouldering",
+                  "details": "Climb a few easy problems (V0-V5) to get the body moving.",
+                  "requiredEquipment": "Bouldering wall",
+                  "sets": "N/A",
+                  "reps": "10 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 60,
+              "exercises": [
+                {
+                  "exerciseName": "Power Maintenance Bouldering",
+                  "details": "A very short, low-volume bouldering session. Climb 3-4 problems at your onsight grade (V9) to maintain recruitment without causing fatigue.",
+                  "requiredEquipment": "Bouldering wall",
+                  "sets": "N/A",
+                  "reps": "3-4 problems",
+                  "rest": "3-4 minutes",
+                  "intensity": "High, RPE 8/10",
+                  "estimatedCompletionTime": "25",
+                  "howToAdjust": "The goal is to feel powerful and sharp. Stop before you feel any fatigue."
+                },
+                {
+                  "exerciseName": "Push-ups",
+                  "details": "Standard push-ups.",
+                  "requiredEquipment": "None",
+                  "sets": "3",
+                  "reps": "15-20",
+                  "rest": "2 minutes",
+                  "intensity": "Moderate",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "This is for maintenance and posture."
+                },
+                {
+                  "exerciseName": "Core Work",
+                  "details": "Choose one core exercise (e.g., Hanging Leg Raises) and perform it with high quality.",
+                  "requiredEquipment": "Pull-up bar",
+                  "sets": "3",
+                  "reps": "10-15",
+                  "rest": "2 minutes",
+                  "intensity": "Moderate-High",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 10,
+              "activities": [
+                {
+                  "exerciseName": "Static Stretching",
+                  "details": "Gentle stretching for chest and shoulders.",
+                  "requiredEquipment": "None",
+                  "sets": "1",
+                  "reps": "30s per side",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            }
+          },
+          {
+            "sessionNumber": 3,
+            "dayOfTheWeek": "Friday",
+            "sessionType": "Active Recovery",
+            "sessionFocus": "Mobility and Light Activity",
+            "warmUp": {
+              "durationMinutes": 10,
+              "exercises": [
+                {
+                  "exerciseName": "Light Cardio",
+                  "details": "Easy cycling or walking.",
+                  "requiredEquipment": "Bike or treadmill",
+                  "sets": "1",
+                  "reps": "10 minutes",
+                  "rest": "N/A",
+                  "intensity": "Very Low",
+                  "estimatedCompletionTime": "10",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 45,
+              "exercises": [
+                {
+                  "exerciseName": "ARC / Very Easy Climbing",
+                  "details": "Climb for 20-25 minutes on very easy terrain (5.8-5.9) with zero pump. This is purely for blood flow and recovery.",
+                  "requiredEquipment": "Climbing wall",
+                  "sets": "1",
+                  "reps": "20-25 minutes",
+                  "rest": "N/A",
+                  "intensity": "Very Low, RPE 2/10",
+                  "estimatedCompletionTime": "25",
+                  "howToAdjust": "If you feel at all tired, stop. This session is optional and can be replaced with a full rest day."
+                },
+                {
+                  "exerciseName": "Mobility & Foam Rolling",
+                  "details": "Spend time on foam rolling your lats, back, and legs. Follow with a comprehensive mobility routine for hips and shoulders.",
+                  "requiredEquipment": "Foam roller",
+                  "sets": "N/A",
+                  "reps": "N/A",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "20",
+                  "howToAdjust": "Focus on areas of tightness or soreness from the week's training."
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 5,
+              "activities": [
+                {
+                  "exerciseName": "Deep Breathing",
+                  "details": "Lie on your back and perform diaphragmatic breathing to promote relaxation.",
+                  "requiredEquipment": "None",
+                  "sets": "1",
+                  "reps": "5 minutes",
+                  "rest": "N/A",
+                  "intensity": "Rest",
+                  "estimatedCompletionTime": "5",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "week": 13,
+        "phase": "Projecting & Redpoint Phase",
+        "weeklyFocus": "Full focus on sending a specific project. All sessions are structured around maximizing performance on that climb. Minimal supplemental training; prioritize rest and high-quality attempts.",
+        "dailySessions": [
+          {
+            "sessionNumber": 1,
+            "dayOfTheWeek": "Tuesday",
+            "sessionType": "Climbing",
+            "sessionFocus": "Project Redpoint Attempts",
+            "warmUp": {
+              "durationMinutes": 45,
+              "exercises": [
+                {
+                  "exerciseName": "General Warm-up",
+                  "details": "10 mins light cardio. 10 mins dynamic stretching & mobility.",
+                  "requiredEquipment": "Any cardio machine",
+                  "sets": "1",
+                  "reps": "20 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "20",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Specific Warm-up",
+                  "details": "Climb two easy routes (e.g., 5.10d, 5.11c). Then, climb one harder route (~5.12c). Finally, do one hang on the crux holds of your project and rehearse the crux move 1-2 times.",
+                  "requiredEquipment": "Sport climbing wall",
+                  "sets": "N/A",
+                  "reps": "N/A",
+                  "rest": "As needed",
+                  "intensity": "Low to High",
+                  "estimatedCompletionTime": "25",
+                  "howToAdjust": "This warm-up is highly specific. The goal is to arrive at the base of your project feeling 100% ready to perform, but not at all tired."
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 90,
+              "exercises": [
+                {
+                  "exerciseName": "Project Redpoint Attempts",
+                  "details": "Give a maximum of 2-3 high-quality redpoint burns on your main project. Rest completely between attempts. Visualize success and execute your beta perfectly. This is a performance, not a training session.",
+                  "requiredEquipment": "Sport climbing wall, project route",
+                  "sets": "2-3",
+                  "reps": "1 redpoint attempt",
+                  "rest": "30-45 minutes",
+                  "intensity": "Maximal, RPE 10/10",
+                  "estimatedCompletionTime": "90",
+                  "howToAdjust": "If the first attempt feels terrible, consider using the rest of the session to work on links and save the next true attempt for another day. If you send, celebrate!"
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 15,
+              "activities": [
+                {
+                  "exerciseName": "Gentle Stretching",
+                  "details": "Very light static stretching for antagonist muscles (chest, triceps) and light mobility work for hips.",
+                  "requiredEquipment": "None",
+                  "sets": "1",
+                  "reps": "15 minutes",
+                  "rest": "N/A",
+                  "intensity": "Very Low",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "Avoid stretching climbing muscles to exhaustion."
+                }
+              ]
+            }
+          },
+          {
+            "sessionNumber": 2,
+            "dayOfTheWeek": "Thursday",
+            "sessionType": "Active Recovery",
+            "sessionFocus": "Promote Recovery & Maintain Mobility",
+            "warmUp": {
+              "durationMinutes": 0,
+              "exercises": []
+            },
+            "mainSession": {
+              "durationMinutes": 45,
+              "exercises": [
+                {
+                  "exerciseName": "Light Non-Climbing Activity",
+                  "details": "A brisk walk, light jog, or cycling session.",
+                  "requiredEquipment": "None",
+                  "sets": "1",
+                  "reps": "20-30 minutes",
+                  "rest": "N/A",
+                  "intensity": "Very Low",
+                  "estimatedCompletionTime": "30",
+                  "howToAdjust": "The goal is blood flow, not a workout."
+                },
+                {
+                  "exerciseName": "Foam Rolling & Mobility",
+                  "details": "Focus on lats, thoracic spine, and hips.",
+                  "requiredEquipment": "Foam roller",
+                  "sets": "N/A",
+                  "reps": "15 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "N/A"
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 0,
+              "activities": []
+            }
+          },
+          {
+            "sessionNumber": 3,
+            "dayOfTheWeek": "Saturday",
+            "sessionType": "Climbing",
+            "sessionFocus": "Project Redpoint Attempts (Second Window)",
+            "warmUp": {
+              "durationMinutes": 45,
+              "exercises": [
+                {
+                  "exerciseName": "General Warm-up",
+                  "details": "10 mins light cardio. 10 mins dynamic stretching & mobility.",
+                  "requiredEquipment": "Any cardio machine",
+                  "sets": "1",
+                  "reps": "20 minutes",
+                  "rest": "N/A",
+                  "intensity": "Low",
+                  "estimatedCompletionTime": "20",
+                  "howToAdjust": "N/A"
+                },
+                {
+                  "exerciseName": "Specific Warm-up",
+                  "details": "Climb two easy routes (e.g., 5.10d, 5.11c). Then, climb one harder route (~5.12c). Finally, do one hang on the crux holds of your project and rehearse the crux move 1-2 times.",
+                  "requiredEquipment": "Sport climbing wall",
+                  "sets": "N/A",
+                  "reps": "N/A",
+                  "rest": "As needed",
+                  "intensity": "Low to High",
+                  "estimatedCompletionTime": "25",
+                  "howToAdjust": "This should be an identical ritual to the first projecting day of the week."
+                }
+              ]
+            },
+            "mainSession": {
+              "durationMinutes": 90,
+              "exercises": [
+                {
+                  "exerciseName": "Project Redpoint Attempts",
+                  "details": "Second opportunity of the week for redpoint burns. Give a maximum of 2-3 high-quality attempts. Trust your training and execute.",
+                  "requiredEquipment": "Sport climbing wall, project route",
+                  "sets": "2-3",
+                  "reps": "1 redpoint attempt",
+                  "rest": "30-45 minutes",
+                  "intensity": "Maximal, RPE 10/10",
+                  "estimatedCompletionTime": "90",
+                  "howToAdjust": "Listen to your body. If you feel significantly more fatigued than the first session, it may be better to stop and rest rather than build fatigue for the following week."
+                }
+              ]
+            },
+            "coolDown": {
+              "durationMinutes": 15,
+              "activities": [
+                {
+                  "exerciseName": "Gentle Stretching",
+                  "details": "Very light static stretching for antagonist muscles (chest, triceps) and light mobility work for hips.",
+                  "requiredEquipment": "None",
+                  "sets": "1",
+                  "reps": "15 minutes",
+                  "rest": "N/A",
+                  "intensity": "Very Low",
+                  "estimatedCompletionTime": "15",
+                  "howToAdjust": "Avoid stretching climbing muscles to exhaustion."
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "glossary": {
+      "RPE": "Rate of Perceived Exertion, a scale from 1 (rest) to 10 (maximal effort). Used to gauge intensity subjectively.",
+      "Limit Bouldering": "Trying boulder problems at your maximum physical limit (V11+) to increase strength and neural recruitment. Sending is not the primary goal; high-quality effort on individual moves is.",
+      "Linked Boulder Circuits": "A power-endurance drill where you connect multiple boulder problems or a long sequence of moves on a spray wall to simulate the continuous difficulty of a hard sport route.",
+      "ARC": "Aerobic Restoration and Capillarity. Climbing continuously on easy terrain for an extended period (20-45 minutes) at a very low intensity to build a deep endurance base and promote recovery."
+    }
+  }

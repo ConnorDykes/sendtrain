@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+ANALYZE: the images in assets/screens.
+OBJECTIVE
+Launch 5 concurrent sub-agents in parallel to develop a single UI concept with different approaches,
+Enabling users to compare options and select the most effectivesolution;
+
+Instructions for each sub-agent:
+
+Use the image in assets/screens to guide your styling.
+Review the styling specifications in lib/style_guide.json, along with reference images for guidance.
+
+Construct
+a standalone Flutter widgets or or groups of Widgets featuring one interface screen thataddresses the user requirements/brief.
+Save dart files to agent_mockups directory using naming convention {requested_feature}_{n}.html (Where requested_feature isthe name of the ui screen or feature being reqiuest n must be distinct such as log_in_1.dart, log_in_2.dart or profile_1.dart, profile_2.dart. ect.)

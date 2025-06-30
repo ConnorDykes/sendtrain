@@ -44,6 +44,11 @@ class AppTheme {
         borderSide: BorderSide.none,
       ),
     ),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: Colors.white,
+      selectionColor: const Color(0xFF8A2BE2).withOpacity(0.5),
+      selectionHandleColor: const Color(0xFF8A2BE2),
+    ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: const Color(0xFF007BFF),
