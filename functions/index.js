@@ -11,6 +11,7 @@
 
 const functions = require("firebase-functions");
 const {onCall} = require("firebase-functions/v2/https");
+const {FieldValue} = require("firebase-admin/firestore");
 const admin = require("firebase-admin");
 const {genkit} = require("genkit");
 const {enableFirebaseTelemetry} = require("@genkit-ai/firebase");
@@ -339,7 +340,7 @@ exports.generateClimbingProgram = onCall(
         const userRef = admin.firestore().collection("users").doc(uid);
         const newPlanRef = userRef.collection("trainingPlans").doc();
 
-        const programDataWithId = {...programJson, id: newPlanRef.id};
+        const programDataWithId = {...programJson.result, id: newPlanRef.id, generatedAt: FieldValue.serverTimestamp()};
 
         await newPlanRef.set(programDataWithId);
 

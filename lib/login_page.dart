@@ -22,6 +22,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _isAppleLoading = false;
+  bool _isGoogleLoading = false;
 
   @override
   void dispose() {
@@ -50,6 +51,45 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       if (mounted) {
         setState(() {
           _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() {
+      _isGoogleLoading = true;
+    });
+
+    try {
+      final authService = ref.read(firebaseAuthServiceProvider);
+      final error = await authService.signInWithGoogle();
+
+      if (mounted) {
+        if (error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        } else {
+          print('✅ Google Sign-In successful');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Google Sign-In failed: ${e.toString()}'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isGoogleLoading = false;
         });
       }
     }
@@ -312,8 +352,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           children: [
             _buildSocialButton(
               asset: _getGoogleIconSvg(),
-              onTap: () {},
-              isLoading: false,
+              onTap: _signInWithGoogle,
+              isLoading: _isGoogleLoading,
             ),
             const SizedBox(width: 16),
             if (Platform.isIOS)

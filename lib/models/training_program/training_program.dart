@@ -18,6 +18,7 @@ abstract class TrainingProgram with _$TrainingProgram {
     List<WeeklySession>? weeklySchedule,
     List<GlossaryItem>? glossary,
     @TimestampConverter() DateTime? startedAt,
+    @TimestampConverter() DateTime? generatedAt,
   }) = _TrainingProgram;
 
   factory TrainingProgram.fromJson(Map<String, dynamic> json) =>
@@ -90,7 +91,6 @@ abstract class DailySession with _$DailySession {
     SessionPhase? warmUp,
     SessionPhase? mainSession,
     SessionPhase? coolDown,
-
   }) = _DailySession;
 
   factory DailySession.fromJson(Map<String, dynamic> json) =>

@@ -16,6 +16,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   bool _agreedToTerms = false;
   bool _isLoading = false;
+  bool _isGoogleLoading = false;
 
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -39,7 +40,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     if (!_agreedToTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('You must agree to the Terms of Service.')),
+          content: Text('You must agree to the Terms of Service.'),
+        ),
       );
       return;
     }
@@ -63,12 +65,73 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       });
 
       if (error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error)));
       } else {
+        // Signup successful - pop the signup page and let auth state listener handle navigation
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Sign up successful!')),
+          const SnackBar(content: Text('Account created successfully!')),
+        );
+
+        // Wait a moment for the auth state to propagate, then pop
+        await Future.delayed(const Duration(milliseconds: 500));
+
+        if (mounted) {
+          Navigator.of(context).pop(); // Return to login/main flow
+        }
+      }
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() {
+      _isGoogleLoading = true;
+    });
+
+    try {
+      final authService = ref.read(firebaseAuthServiceProvider);
+      final error = await authService.signInWithGoogle();
+
+      if (mounted) {
+        setState(() {
+          _isGoogleLoading = false;
+        });
+
+        if (error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        } else {
+          // Google Sign-In successful - pop the signup page and let auth state listener handle navigation
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Signed in with Google successfully!'),
+            ),
+          );
+
+          // Wait a moment for the auth state to propagate, then pop
+          await Future.delayed(const Duration(milliseconds: 500));
+
+          if (mounted) {
+            Navigator.of(context).pop(); // Return to login/main flow
+          }
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isGoogleLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Google Sign-In failed: ${e.toString()}'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
         );
       }
     }
@@ -112,14 +175,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             _buildTitle(theme),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Get Started',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                color: Colors.white70,
-                              ),
-                            ),
+
                             const SizedBox(height: 32),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,9 +184,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   child: TextFormField(
                                     controller: _firstNameController,
                                     decoration: const InputDecoration(
-                                        hintText: 'First Name'),
+                                      hintText: 'First Name',
+                                    ),
                                     autofillHints: const [
-                                      AutofillHints.givenName
+                                      AutofillHints.givenName,
                                     ],
                                     textCapitalization:
                                         TextCapitalization.words,
@@ -147,9 +204,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                                   child: TextFormField(
                                     controller: _lastNameController,
                                     decoration: const InputDecoration(
-                                        hintText: 'Last Name'),
+                                      hintText: 'Last Name',
+                                    ),
                                     autofillHints: const [
-                                      AutofillHints.familyName
+                                      AutofillHints.familyName,
                                     ],
                                     textCapitalization:
                                         TextCapitalization.words,
@@ -166,16 +224,18 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             const SizedBox(height: 16),
                             TextFormField(
                               controller: _emailController,
-                              decoration:
-                                  const InputDecoration(hintText: 'Email'),
+                              decoration: const InputDecoration(
+                                hintText: 'Email',
+                              ),
                               autofillHints: const [AutofillHints.email],
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your email.';
                                 }
-                                if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                                    .hasMatch(value)) {
+                                if (!RegExp(
+                                  r'^[^@]+@[^@]+\.[^@]+',
+                                ).hasMatch(value)) {
                                   return 'Please enter a valid email address.';
                                 }
                                 return null;
@@ -185,8 +245,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                             TextFormField(
                               controller: _passwordController,
                               obscureText: true,
-                              decoration:
-                                  const InputDecoration(hintText: 'Password'),
+                              decoration: const InputDecoration(
+                                hintText: 'Password',
+                              ),
                               autofillHints: const [AutofillHints.newPassword],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -237,10 +298,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           child: Text.rich(
             TextSpan(
               text: 'I agree to the ',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Colors.white70),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.white70),
               children: [
                 TextSpan(
                   text: 'Terms of Service',
@@ -259,18 +319,28 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
   Widget _buildTitle(ThemeData theme) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text('SendTr',
-            style: theme.textTheme.displayLarge?.copyWith(color: Colors.white)),
-        Text('A',
-            style: theme.textTheme.displayLarge
-                ?.copyWith(color: theme.colorScheme.secondary)),
-        Text('I',
-            style: theme.textTheme.displayLarge
-                ?.copyWith(color: theme.colorScheme.secondary)),
-        Text('n',
-            style: theme.textTheme.displayLarge?.copyWith(color: Colors.white)),
+        Text(
+          'SendTr',
+          style: theme.textTheme.displayLarge?.copyWith(color: Colors.white),
+        ),
+        Text(
+          'A',
+          style: theme.textTheme.displayLarge?.copyWith(
+            color: theme.colorScheme.secondary,
+          ),
+        ),
+        Text(
+          'I',
+          style: theme.textTheme.displayLarge?.copyWith(
+            color: theme.colorScheme.secondary,
+          ),
+        ),
+        Text(
+          'n',
+          style: theme.textTheme.displayLarge?.copyWith(color: Colors.white),
+        ),
       ],
     );
   }
@@ -286,8 +356,11 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
         child: Container(
-            decoration: const BoxDecoration(
-                shape: BoxShape.circle, color: Colors.transparent)),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.transparent,
+          ),
+        ),
       ),
     );
   }
@@ -342,16 +415,20 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   Widget _buildSocialLogins(BuildContext context) {
     return Column(
       children: [
-        Text("Or sign up with",
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: Colors.white70)),
+        Text(
+          "Or sign up with",
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+        ),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildSocialButton(asset: _getGoogleIconSvg(), onTap: () {}),
+            _buildSocialButton(
+              asset: _getGoogleIconSvg(),
+              onTap: _signInWithGoogle,
+            ),
             const SizedBox(width: 16),
             if (Platform.isIOS)
               _buildSocialButton(asset: _getAppleIconSvg(), onTap: () {}),
@@ -361,17 +438,29 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     );
   }
 
-  Widget _buildSocialButton(
-      {required String asset, required VoidCallback onTap}) {
+  Widget _buildSocialButton({
+    required String asset,
+    required VoidCallback onTap,
+  }) {
     return InkWell(
-      onTap: onTap,
+      onTap: _isGoogleLoading ? null : onTap,
       borderRadius: BorderRadius.circular(10),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(10)),
-        child: SvgPicture.string(asset, height: 30, width: 30),
+          color: Colors.white.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: _isGoogleLoading && asset == _getGoogleIconSvg()
+            ? const SizedBox(
+                height: 30,
+                width: 30,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : SvgPicture.string(asset, height: 30, width: 30),
       ),
     );
   }
@@ -387,10 +476,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       children: [
         Text(
           "Already have an account?",
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: Colors.white70),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),

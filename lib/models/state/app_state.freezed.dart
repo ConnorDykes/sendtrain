@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppState {
 
- UserModel? get user; List<TrainingProgram>? get trainingPrograms; TrainingProgram? get selectedTrainingProgram; bool get isGeneratingPlan;
+ UserModel? get user; List<TrainingProgram>? get trainingPrograms; TrainingProgram? get selectedTrainingProgram; bool get isGeneratingPlan; bool get isInitializing;
 /// Create a copy of AppState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $AppStateCopyWith<AppState> get copyWith => _$AppStateCopyWithImpl<AppState>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppState&&(identical(other.user, user) || other.user == user)&&const DeepCollectionEquality().equals(other.trainingPrograms, trainingPrograms)&&(identical(other.selectedTrainingProgram, selectedTrainingProgram) || other.selectedTrainingProgram == selectedTrainingProgram)&&(identical(other.isGeneratingPlan, isGeneratingPlan) || other.isGeneratingPlan == isGeneratingPlan));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppState&&(identical(other.user, user) || other.user == user)&&const DeepCollectionEquality().equals(other.trainingPrograms, trainingPrograms)&&(identical(other.selectedTrainingProgram, selectedTrainingProgram) || other.selectedTrainingProgram == selectedTrainingProgram)&&(identical(other.isGeneratingPlan, isGeneratingPlan) || other.isGeneratingPlan == isGeneratingPlan)&&(identical(other.isInitializing, isInitializing) || other.isInitializing == isInitializing));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,const DeepCollectionEquality().hash(trainingPrograms),selectedTrainingProgram,isGeneratingPlan);
+int get hashCode => Object.hash(runtimeType,user,const DeepCollectionEquality().hash(trainingPrograms),selectedTrainingProgram,isGeneratingPlan,isInitializing);
 
 @override
 String toString() {
-  return 'AppState(user: $user, trainingPrograms: $trainingPrograms, selectedTrainingProgram: $selectedTrainingProgram, isGeneratingPlan: $isGeneratingPlan)';
+  return 'AppState(user: $user, trainingPrograms: $trainingPrograms, selectedTrainingProgram: $selectedTrainingProgram, isGeneratingPlan: $isGeneratingPlan, isInitializing: $isInitializing)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $AppStateCopyWith<$Res>  {
   factory $AppStateCopyWith(AppState value, $Res Function(AppState) _then) = _$AppStateCopyWithImpl;
 @useResult
 $Res call({
- UserModel? user, List<TrainingProgram>? trainingPrograms, TrainingProgram? selectedTrainingProgram, bool isGeneratingPlan
+ UserModel? user, List<TrainingProgram>? trainingPrograms, TrainingProgram? selectedTrainingProgram, bool isGeneratingPlan, bool isInitializing
 });
 
 
@@ -63,12 +63,13 @@ class _$AppStateCopyWithImpl<$Res>
 
 /// Create a copy of AppState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? user = freezed,Object? trainingPrograms = freezed,Object? selectedTrainingProgram = freezed,Object? isGeneratingPlan = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? user = freezed,Object? trainingPrograms = freezed,Object? selectedTrainingProgram = freezed,Object? isGeneratingPlan = null,Object? isInitializing = null,}) {
   return _then(_self.copyWith(
 user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserModel?,trainingPrograms: freezed == trainingPrograms ? _self.trainingPrograms : trainingPrograms // ignore: cast_nullable_to_non_nullable
 as List<TrainingProgram>?,selectedTrainingProgram: freezed == selectedTrainingProgram ? _self.selectedTrainingProgram : selectedTrainingProgram // ignore: cast_nullable_to_non_nullable
 as TrainingProgram?,isGeneratingPlan: null == isGeneratingPlan ? _self.isGeneratingPlan : isGeneratingPlan // ignore: cast_nullable_to_non_nullable
+as bool,isInitializing: null == isInitializing ? _self.isInitializing : isInitializing // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -104,7 +105,7 @@ $TrainingProgramCopyWith<$Res>? get selectedTrainingProgram {
 
 
 class _AppState implements AppState {
-  const _AppState({this.user, final  List<TrainingProgram>? trainingPrograms, this.selectedTrainingProgram, this.isGeneratingPlan = false}): _trainingPrograms = trainingPrograms;
+  const _AppState({this.user, final  List<TrainingProgram>? trainingPrograms, this.selectedTrainingProgram, this.isGeneratingPlan = false, this.isInitializing = true}): _trainingPrograms = trainingPrograms;
   
 
 @override final  UserModel? user;
@@ -119,6 +120,7 @@ class _AppState implements AppState {
 
 @override final  TrainingProgram? selectedTrainingProgram;
 @override@JsonKey() final  bool isGeneratingPlan;
+@override@JsonKey() final  bool isInitializing;
 
 /// Create a copy of AppState
 /// with the given fields replaced by the non-null parameter values.
@@ -130,16 +132,16 @@ _$AppStateCopyWith<_AppState> get copyWith => __$AppStateCopyWithImpl<_AppState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppState&&(identical(other.user, user) || other.user == user)&&const DeepCollectionEquality().equals(other._trainingPrograms, _trainingPrograms)&&(identical(other.selectedTrainingProgram, selectedTrainingProgram) || other.selectedTrainingProgram == selectedTrainingProgram)&&(identical(other.isGeneratingPlan, isGeneratingPlan) || other.isGeneratingPlan == isGeneratingPlan));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppState&&(identical(other.user, user) || other.user == user)&&const DeepCollectionEquality().equals(other._trainingPrograms, _trainingPrograms)&&(identical(other.selectedTrainingProgram, selectedTrainingProgram) || other.selectedTrainingProgram == selectedTrainingProgram)&&(identical(other.isGeneratingPlan, isGeneratingPlan) || other.isGeneratingPlan == isGeneratingPlan)&&(identical(other.isInitializing, isInitializing) || other.isInitializing == isInitializing));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,const DeepCollectionEquality().hash(_trainingPrograms),selectedTrainingProgram,isGeneratingPlan);
+int get hashCode => Object.hash(runtimeType,user,const DeepCollectionEquality().hash(_trainingPrograms),selectedTrainingProgram,isGeneratingPlan,isInitializing);
 
 @override
 String toString() {
-  return 'AppState(user: $user, trainingPrograms: $trainingPrograms, selectedTrainingProgram: $selectedTrainingProgram, isGeneratingPlan: $isGeneratingPlan)';
+  return 'AppState(user: $user, trainingPrograms: $trainingPrograms, selectedTrainingProgram: $selectedTrainingProgram, isGeneratingPlan: $isGeneratingPlan, isInitializing: $isInitializing)';
 }
 
 
@@ -150,7 +152,7 @@ abstract mixin class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res>
   factory _$AppStateCopyWith(_AppState value, $Res Function(_AppState) _then) = __$AppStateCopyWithImpl;
 @override @useResult
 $Res call({
- UserModel? user, List<TrainingProgram>? trainingPrograms, TrainingProgram? selectedTrainingProgram, bool isGeneratingPlan
+ UserModel? user, List<TrainingProgram>? trainingPrograms, TrainingProgram? selectedTrainingProgram, bool isGeneratingPlan, bool isInitializing
 });
 
 
@@ -167,12 +169,13 @@ class __$AppStateCopyWithImpl<$Res>
 
 /// Create a copy of AppState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? user = freezed,Object? trainingPrograms = freezed,Object? selectedTrainingProgram = freezed,Object? isGeneratingPlan = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? user = freezed,Object? trainingPrograms = freezed,Object? selectedTrainingProgram = freezed,Object? isGeneratingPlan = null,Object? isInitializing = null,}) {
   return _then(_AppState(
 user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserModel?,trainingPrograms: freezed == trainingPrograms ? _self._trainingPrograms : trainingPrograms // ignore: cast_nullable_to_non_nullable
 as List<TrainingProgram>?,selectedTrainingProgram: freezed == selectedTrainingProgram ? _self.selectedTrainingProgram : selectedTrainingProgram // ignore: cast_nullable_to_non_nullable
 as TrainingProgram?,isGeneratingPlan: null == isGeneratingPlan ? _self.isGeneratingPlan : isGeneratingPlan // ignore: cast_nullable_to_non_nullable
+as bool,isInitializing: null == isInitializing ? _self.isInitializing : isInitializing // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

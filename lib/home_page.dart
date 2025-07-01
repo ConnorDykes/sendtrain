@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sendtrain/explore_page.dart';
 import 'package:sendtrain/models/user/user_model.dart';
 import 'package:sendtrain/profile_page.dart';
 import 'package:sendtrain/providers/app_state_provider.dart';
@@ -27,7 +26,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      if (index == 2) {
+      if (index == 1) {
         ref.read(appStateProvider.notifier).setSelectedTrainingProgram(null);
       }
       _selectedIndex = index;
@@ -41,8 +40,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     final List<Widget> pages = [
       if (user != null)
-        _HomeContent(user: user, onViewPlan: () => _onItemTapped(2)),
-      const ExplorePage(),
+        _HomeContent(user: user, onViewPlan: () => _onItemTapped(1)),
       const PlanPage(),
       if (user != null) ProfilePage(user: user),
     ];
@@ -68,10 +66,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       unselectedItemColor: Colors.white,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.explore_outlined),
-          label: 'Explore',
-        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.calendar_today),
           label: 'Plan',
@@ -118,7 +112,11 @@ class _HomeContent extends ConsumerWidget {
               (p) => _TrainingProgramCard(program: p, onViewPlan: onViewPlan),
             ),
             const SizedBox(height: 24),
-            _buildSecondaryCreatePlanCard(context, hasActiveProgram),
+            _buildSecondaryCreatePlanCard(
+              context,
+              hasActiveProgram,
+              trainingPrograms,
+            ),
           ] else
             const CreatePlanCard(),
           const SizedBox(height: 24),
@@ -150,7 +148,7 @@ class _HomeContent extends ConsumerWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'We will notify you when it is completed.',
+                    'This can take a number of minutes. We will notify you when it is ready.',
                     style: TextStyle(color: Colors.white70),
                   ),
                 ],
@@ -162,48 +160,90 @@ class _HomeContent extends ConsumerWidget {
     );
   }
 
+  bool _hasReachedGenerationLimit(List<TrainingProgram> programs) {
+    final thirtyDaysAgo = DateTime.now().subtract(const Duration(days: 30));
+    final recentPlans = programs.where((program) {
+      // Note: Using createdAt if available, otherwise falling back to a reasonable default
+      final createdDate = program.startedAt ?? DateTime.now();
+      return createdDate.isAfter(thirtyDaysAgo);
+    }).length;
+
+    return recentPlans >= 3;
+  }
+
+  void _showGenerationLimitDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Plan Generation Limit Reached'),
+        content: const Text(
+          'Oops, you\'ve reached your limit on plan generation for this month. You can only generate 3 plans every 30 days.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _handleCreatePlan(
+    BuildContext context,
+    List<TrainingProgram> trainingPrograms,
+  ) {
+    // Check generation limit first
+    if (_hasReachedGenerationLimit(trainingPrograms)) {
+      _showGenerationLimitDialog(context);
+      return;
+    }
+
+    final hasActiveProgram = trainingPrograms.any((p) => p.startedAt != null);
+
+    if (hasActiveProgram) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Replace Active Plan?'),
+          content: const Text(
+            'You already have an active training plan. Creating a new one will remove your current plan. Are you sure you want to continue?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TrainingForm()),
+                );
+              },
+              child: const Text('Continue'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const TrainingForm()),
+      );
+    }
+  }
+
   Widget _buildSecondaryCreatePlanCard(
     BuildContext context,
     bool hasActiveProgram,
+    List<TrainingProgram> trainingPrograms,
   ) {
     final theme = Theme.of(context);
+
     return GestureDetector(
-      onTap: () {
-        if (hasActiveProgram) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Replace Active Plan?'),
-              content: const Text(
-                'You already have an active training plan. Creating a new one will remove your current plan. Are you sure you want to continue?',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TrainingForm(),
-                      ),
-                    );
-                  },
-                  child: const Text('Continue'),
-                ),
-              ],
-            ),
-          );
-        } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const TrainingForm()),
-          );
-        }
-      },
+      onTap: () => _handleCreatePlan(context, trainingPrograms),
       child: _buildGlassmorphicCard(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -391,4 +431,89 @@ Widget _buildPlanItem(
       ],
     ),
   );
+}
+
+class CreatePlanCard extends ConsumerWidget {
+  const CreatePlanCard({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final appState = ref.watch(appStateProvider);
+    final trainingPrograms = appState.trainingPrograms ?? [];
+
+    return GestureDetector(
+      onTap: () {
+        // Check generation limit first
+        final thirtyDaysAgo = DateTime.now().subtract(const Duration(days: 30));
+        final recentPlans = trainingPrograms.where((program) {
+          final createdDate = program.startedAt ?? DateTime.now();
+          return createdDate.isAfter(thirtyDaysAgo);
+        }).length;
+
+        if (recentPlans >= 3) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Plan Generation Limit Reached'),
+              content: const Text(
+                'Oops, you\'ve reached your limit on plan generation for this month. You can only generate 3 plans every 30 days.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+          return;
+        }
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const TrainingForm()),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white.withOpacity(0.2)),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.auto_awesome_outlined,
+              color: Colors.white,
+              size: 40,
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Create A Training Plan',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Let our custom AI craft a unique training system tailored to your goals.',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: Colors.white70,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

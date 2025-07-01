@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TrainingProgram {
 
- String? get id; String? get programTitle; String? get programFocus; int? get durationWeeks; String? get programDescripton; ProgramNotes? get programNotes; List<WeeklySession>? get weeklySchedule; List<GlossaryItem>? get glossary;@TimestampConverter() DateTime? get startedAt;
+ String? get id; String? get programTitle; String? get programFocus; int? get durationWeeks; String? get programDescripton; ProgramNotes? get programNotes; List<WeeklySession>? get weeklySchedule; List<GlossaryItem>? get glossary;@TimestampConverter() DateTime? get startedAt;@TimestampConverter() DateTime? get generatedAt;
 /// Create a copy of TrainingProgram
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $TrainingProgramCopyWith<TrainingProgram> get copyWith => _$TrainingProgramCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TrainingProgram&&(identical(other.id, id) || other.id == id)&&(identical(other.programTitle, programTitle) || other.programTitle == programTitle)&&(identical(other.programFocus, programFocus) || other.programFocus == programFocus)&&(identical(other.durationWeeks, durationWeeks) || other.durationWeeks == durationWeeks)&&(identical(other.programDescripton, programDescripton) || other.programDescripton == programDescripton)&&(identical(other.programNotes, programNotes) || other.programNotes == programNotes)&&const DeepCollectionEquality().equals(other.weeklySchedule, weeklySchedule)&&const DeepCollectionEquality().equals(other.glossary, glossary)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TrainingProgram&&(identical(other.id, id) || other.id == id)&&(identical(other.programTitle, programTitle) || other.programTitle == programTitle)&&(identical(other.programFocus, programFocus) || other.programFocus == programFocus)&&(identical(other.durationWeeks, durationWeeks) || other.durationWeeks == durationWeeks)&&(identical(other.programDescripton, programDescripton) || other.programDescripton == programDescripton)&&(identical(other.programNotes, programNotes) || other.programNotes == programNotes)&&const DeepCollectionEquality().equals(other.weeklySchedule, weeklySchedule)&&const DeepCollectionEquality().equals(other.glossary, glossary)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt)&&(identical(other.generatedAt, generatedAt) || other.generatedAt == generatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,programTitle,programFocus,durationWeeks,programDescripton,programNotes,const DeepCollectionEquality().hash(weeklySchedule),const DeepCollectionEquality().hash(glossary),startedAt);
+int get hashCode => Object.hash(runtimeType,id,programTitle,programFocus,durationWeeks,programDescripton,programNotes,const DeepCollectionEquality().hash(weeklySchedule),const DeepCollectionEquality().hash(glossary),startedAt,generatedAt);
 
 @override
 String toString() {
-  return 'TrainingProgram(id: $id, programTitle: $programTitle, programFocus: $programFocus, durationWeeks: $durationWeeks, programDescripton: $programDescripton, programNotes: $programNotes, weeklySchedule: $weeklySchedule, glossary: $glossary, startedAt: $startedAt)';
+  return 'TrainingProgram(id: $id, programTitle: $programTitle, programFocus: $programFocus, durationWeeks: $durationWeeks, programDescripton: $programDescripton, programNotes: $programNotes, weeklySchedule: $weeklySchedule, glossary: $glossary, startedAt: $startedAt, generatedAt: $generatedAt)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $TrainingProgramCopyWith<$Res>  {
   factory $TrainingProgramCopyWith(TrainingProgram value, $Res Function(TrainingProgram) _then) = _$TrainingProgramCopyWithImpl;
 @useResult
 $Res call({
- String? id, String? programTitle, String? programFocus, int? durationWeeks, String? programDescripton, ProgramNotes? programNotes, List<WeeklySession>? weeklySchedule, List<GlossaryItem>? glossary,@TimestampConverter() DateTime? startedAt
+ String? id, String? programTitle, String? programFocus, int? durationWeeks, String? programDescripton, ProgramNotes? programNotes, List<WeeklySession>? weeklySchedule, List<GlossaryItem>? glossary,@TimestampConverter() DateTime? startedAt,@TimestampConverter() DateTime? generatedAt
 });
 
 
@@ -66,7 +66,7 @@ class _$TrainingProgramCopyWithImpl<$Res>
 
 /// Create a copy of TrainingProgram
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? programTitle = freezed,Object? programFocus = freezed,Object? durationWeeks = freezed,Object? programDescripton = freezed,Object? programNotes = freezed,Object? weeklySchedule = freezed,Object? glossary = freezed,Object? startedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? programTitle = freezed,Object? programFocus = freezed,Object? durationWeeks = freezed,Object? programDescripton = freezed,Object? programNotes = freezed,Object? weeklySchedule = freezed,Object? glossary = freezed,Object? startedAt = freezed,Object? generatedAt = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,programTitle: freezed == programTitle ? _self.programTitle : programTitle // ignore: cast_nullable_to_non_nullable
@@ -77,6 +77,7 @@ as String?,programNotes: freezed == programNotes ? _self.programNotes : programN
 as ProgramNotes?,weeklySchedule: freezed == weeklySchedule ? _self.weeklySchedule : weeklySchedule // ignore: cast_nullable_to_non_nullable
 as List<WeeklySession>?,glossary: freezed == glossary ? _self.glossary : glossary // ignore: cast_nullable_to_non_nullable
 as List<GlossaryItem>?,startedAt: freezed == startedAt ? _self.startedAt : startedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,generatedAt: freezed == generatedAt ? _self.generatedAt : generatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }
@@ -100,7 +101,7 @@ $ProgramNotesCopyWith<$Res>? get programNotes {
 @JsonSerializable()
 
 class _TrainingProgram extends TrainingProgram {
-  const _TrainingProgram({this.id, this.programTitle, this.programFocus, this.durationWeeks, this.programDescripton, this.programNotes, final  List<WeeklySession>? weeklySchedule, final  List<GlossaryItem>? glossary, @TimestampConverter() this.startedAt}): _weeklySchedule = weeklySchedule,_glossary = glossary,super._();
+  const _TrainingProgram({this.id, this.programTitle, this.programFocus, this.durationWeeks, this.programDescripton, this.programNotes, final  List<WeeklySession>? weeklySchedule, final  List<GlossaryItem>? glossary, @TimestampConverter() this.startedAt, @TimestampConverter() this.generatedAt}): _weeklySchedule = weeklySchedule,_glossary = glossary,super._();
   factory _TrainingProgram.fromJson(Map<String, dynamic> json) => _$TrainingProgramFromJson(json);
 
 @override final  String? id;
@@ -128,6 +129,7 @@ class _TrainingProgram extends TrainingProgram {
 }
 
 @override@TimestampConverter() final  DateTime? startedAt;
+@override@TimestampConverter() final  DateTime? generatedAt;
 
 /// Create a copy of TrainingProgram
 /// with the given fields replaced by the non-null parameter values.
@@ -142,16 +144,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TrainingProgram&&(identical(other.id, id) || other.id == id)&&(identical(other.programTitle, programTitle) || other.programTitle == programTitle)&&(identical(other.programFocus, programFocus) || other.programFocus == programFocus)&&(identical(other.durationWeeks, durationWeeks) || other.durationWeeks == durationWeeks)&&(identical(other.programDescripton, programDescripton) || other.programDescripton == programDescripton)&&(identical(other.programNotes, programNotes) || other.programNotes == programNotes)&&const DeepCollectionEquality().equals(other._weeklySchedule, _weeklySchedule)&&const DeepCollectionEquality().equals(other._glossary, _glossary)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TrainingProgram&&(identical(other.id, id) || other.id == id)&&(identical(other.programTitle, programTitle) || other.programTitle == programTitle)&&(identical(other.programFocus, programFocus) || other.programFocus == programFocus)&&(identical(other.durationWeeks, durationWeeks) || other.durationWeeks == durationWeeks)&&(identical(other.programDescripton, programDescripton) || other.programDescripton == programDescripton)&&(identical(other.programNotes, programNotes) || other.programNotes == programNotes)&&const DeepCollectionEquality().equals(other._weeklySchedule, _weeklySchedule)&&const DeepCollectionEquality().equals(other._glossary, _glossary)&&(identical(other.startedAt, startedAt) || other.startedAt == startedAt)&&(identical(other.generatedAt, generatedAt) || other.generatedAt == generatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,programTitle,programFocus,durationWeeks,programDescripton,programNotes,const DeepCollectionEquality().hash(_weeklySchedule),const DeepCollectionEquality().hash(_glossary),startedAt);
+int get hashCode => Object.hash(runtimeType,id,programTitle,programFocus,durationWeeks,programDescripton,programNotes,const DeepCollectionEquality().hash(_weeklySchedule),const DeepCollectionEquality().hash(_glossary),startedAt,generatedAt);
 
 @override
 String toString() {
-  return 'TrainingProgram(id: $id, programTitle: $programTitle, programFocus: $programFocus, durationWeeks: $durationWeeks, programDescripton: $programDescripton, programNotes: $programNotes, weeklySchedule: $weeklySchedule, glossary: $glossary, startedAt: $startedAt)';
+  return 'TrainingProgram(id: $id, programTitle: $programTitle, programFocus: $programFocus, durationWeeks: $durationWeeks, programDescripton: $programDescripton, programNotes: $programNotes, weeklySchedule: $weeklySchedule, glossary: $glossary, startedAt: $startedAt, generatedAt: $generatedAt)';
 }
 
 
@@ -162,7 +164,7 @@ abstract mixin class _$TrainingProgramCopyWith<$Res> implements $TrainingProgram
   factory _$TrainingProgramCopyWith(_TrainingProgram value, $Res Function(_TrainingProgram) _then) = __$TrainingProgramCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String? programTitle, String? programFocus, int? durationWeeks, String? programDescripton, ProgramNotes? programNotes, List<WeeklySession>? weeklySchedule, List<GlossaryItem>? glossary,@TimestampConverter() DateTime? startedAt
+ String? id, String? programTitle, String? programFocus, int? durationWeeks, String? programDescripton, ProgramNotes? programNotes, List<WeeklySession>? weeklySchedule, List<GlossaryItem>? glossary,@TimestampConverter() DateTime? startedAt,@TimestampConverter() DateTime? generatedAt
 });
 
 
@@ -179,7 +181,7 @@ class __$TrainingProgramCopyWithImpl<$Res>
 
 /// Create a copy of TrainingProgram
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? programTitle = freezed,Object? programFocus = freezed,Object? durationWeeks = freezed,Object? programDescripton = freezed,Object? programNotes = freezed,Object? weeklySchedule = freezed,Object? glossary = freezed,Object? startedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? programTitle = freezed,Object? programFocus = freezed,Object? durationWeeks = freezed,Object? programDescripton = freezed,Object? programNotes = freezed,Object? weeklySchedule = freezed,Object? glossary = freezed,Object? startedAt = freezed,Object? generatedAt = freezed,}) {
   return _then(_TrainingProgram(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,programTitle: freezed == programTitle ? _self.programTitle : programTitle // ignore: cast_nullable_to_non_nullable
@@ -190,6 +192,7 @@ as String?,programNotes: freezed == programNotes ? _self.programNotes : programN
 as ProgramNotes?,weeklySchedule: freezed == weeklySchedule ? _self._weeklySchedule : weeklySchedule // ignore: cast_nullable_to_non_nullable
 as List<WeeklySession>?,glossary: freezed == glossary ? _self._glossary : glossary // ignore: cast_nullable_to_non_nullable
 as List<GlossaryItem>?,startedAt: freezed == startedAt ? _self.startedAt : startedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,generatedAt: freezed == generatedAt ? _self.generatedAt : generatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }
@@ -502,7 +505,7 @@ as List<DailySession>?,
 /// @nodoc
 mixin _$DailySession {
 
- int? get sessionNumber; String? get dayOfTheWeek; String? get sessionType; String? get sessionFocus; SessionPhase? get warmUp; SessionPhase? get mainSession; SessionPhase? get coolDown;@TimestampConverter() DateTime? get completeAt;
+ int? get sessionNumber; String? get dayOfTheWeek; String? get sessionType; String? get sessionFocus; SessionPhase? get warmUp; SessionPhase? get mainSession; SessionPhase? get coolDown;
 /// Create a copy of DailySession
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -515,16 +518,16 @@ $DailySessionCopyWith<DailySession> get copyWith => _$DailySessionCopyWithImpl<D
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DailySession&&(identical(other.sessionNumber, sessionNumber) || other.sessionNumber == sessionNumber)&&(identical(other.dayOfTheWeek, dayOfTheWeek) || other.dayOfTheWeek == dayOfTheWeek)&&(identical(other.sessionType, sessionType) || other.sessionType == sessionType)&&(identical(other.sessionFocus, sessionFocus) || other.sessionFocus == sessionFocus)&&(identical(other.warmUp, warmUp) || other.warmUp == warmUp)&&(identical(other.mainSession, mainSession) || other.mainSession == mainSession)&&(identical(other.coolDown, coolDown) || other.coolDown == coolDown)&&(identical(other.completeAt, completeAt) || other.completeAt == completeAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DailySession&&(identical(other.sessionNumber, sessionNumber) || other.sessionNumber == sessionNumber)&&(identical(other.dayOfTheWeek, dayOfTheWeek) || other.dayOfTheWeek == dayOfTheWeek)&&(identical(other.sessionType, sessionType) || other.sessionType == sessionType)&&(identical(other.sessionFocus, sessionFocus) || other.sessionFocus == sessionFocus)&&(identical(other.warmUp, warmUp) || other.warmUp == warmUp)&&(identical(other.mainSession, mainSession) || other.mainSession == mainSession)&&(identical(other.coolDown, coolDown) || other.coolDown == coolDown));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,sessionNumber,dayOfTheWeek,sessionType,sessionFocus,warmUp,mainSession,coolDown,completeAt);
+int get hashCode => Object.hash(runtimeType,sessionNumber,dayOfTheWeek,sessionType,sessionFocus,warmUp,mainSession,coolDown);
 
 @override
 String toString() {
-  return 'DailySession(sessionNumber: $sessionNumber, dayOfTheWeek: $dayOfTheWeek, sessionType: $sessionType, sessionFocus: $sessionFocus, warmUp: $warmUp, mainSession: $mainSession, coolDown: $coolDown, completeAt: $completeAt)';
+  return 'DailySession(sessionNumber: $sessionNumber, dayOfTheWeek: $dayOfTheWeek, sessionType: $sessionType, sessionFocus: $sessionFocus, warmUp: $warmUp, mainSession: $mainSession, coolDown: $coolDown)';
 }
 
 
@@ -535,7 +538,7 @@ abstract mixin class $DailySessionCopyWith<$Res>  {
   factory $DailySessionCopyWith(DailySession value, $Res Function(DailySession) _then) = _$DailySessionCopyWithImpl;
 @useResult
 $Res call({
- int? sessionNumber, String? dayOfTheWeek, String? sessionType, String? sessionFocus, SessionPhase? warmUp, SessionPhase? mainSession, SessionPhase? coolDown,@TimestampConverter() DateTime? completeAt
+ int? sessionNumber, String? dayOfTheWeek, String? sessionType, String? sessionFocus, SessionPhase? warmUp, SessionPhase? mainSession, SessionPhase? coolDown
 });
 
 
@@ -552,7 +555,7 @@ class _$DailySessionCopyWithImpl<$Res>
 
 /// Create a copy of DailySession
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? sessionNumber = freezed,Object? dayOfTheWeek = freezed,Object? sessionType = freezed,Object? sessionFocus = freezed,Object? warmUp = freezed,Object? mainSession = freezed,Object? coolDown = freezed,Object? completeAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? sessionNumber = freezed,Object? dayOfTheWeek = freezed,Object? sessionType = freezed,Object? sessionFocus = freezed,Object? warmUp = freezed,Object? mainSession = freezed,Object? coolDown = freezed,}) {
   return _then(_self.copyWith(
 sessionNumber: freezed == sessionNumber ? _self.sessionNumber : sessionNumber // ignore: cast_nullable_to_non_nullable
 as int?,dayOfTheWeek: freezed == dayOfTheWeek ? _self.dayOfTheWeek : dayOfTheWeek // ignore: cast_nullable_to_non_nullable
@@ -561,8 +564,7 @@ as String?,sessionFocus: freezed == sessionFocus ? _self.sessionFocus : sessionF
 as String?,warmUp: freezed == warmUp ? _self.warmUp : warmUp // ignore: cast_nullable_to_non_nullable
 as SessionPhase?,mainSession: freezed == mainSession ? _self.mainSession : mainSession // ignore: cast_nullable_to_non_nullable
 as SessionPhase?,coolDown: freezed == coolDown ? _self.coolDown : coolDown // ignore: cast_nullable_to_non_nullable
-as SessionPhase?,completeAt: freezed == completeAt ? _self.completeAt : completeAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as SessionPhase?,
   ));
 }
 /// Create a copy of DailySession
@@ -609,7 +611,7 @@ $SessionPhaseCopyWith<$Res>? get coolDown {
 @JsonSerializable()
 
 class _DailySession implements DailySession {
-  const _DailySession({this.sessionNumber, this.dayOfTheWeek, this.sessionType, this.sessionFocus, this.warmUp, this.mainSession, this.coolDown, @TimestampConverter() this.completeAt});
+  const _DailySession({this.sessionNumber, this.dayOfTheWeek, this.sessionType, this.sessionFocus, this.warmUp, this.mainSession, this.coolDown});
   factory _DailySession.fromJson(Map<String, dynamic> json) => _$DailySessionFromJson(json);
 
 @override final  int? sessionNumber;
@@ -619,7 +621,6 @@ class _DailySession implements DailySession {
 @override final  SessionPhase? warmUp;
 @override final  SessionPhase? mainSession;
 @override final  SessionPhase? coolDown;
-@override@TimestampConverter() final  DateTime? completeAt;
 
 /// Create a copy of DailySession
 /// with the given fields replaced by the non-null parameter values.
@@ -634,16 +635,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DailySession&&(identical(other.sessionNumber, sessionNumber) || other.sessionNumber == sessionNumber)&&(identical(other.dayOfTheWeek, dayOfTheWeek) || other.dayOfTheWeek == dayOfTheWeek)&&(identical(other.sessionType, sessionType) || other.sessionType == sessionType)&&(identical(other.sessionFocus, sessionFocus) || other.sessionFocus == sessionFocus)&&(identical(other.warmUp, warmUp) || other.warmUp == warmUp)&&(identical(other.mainSession, mainSession) || other.mainSession == mainSession)&&(identical(other.coolDown, coolDown) || other.coolDown == coolDown)&&(identical(other.completeAt, completeAt) || other.completeAt == completeAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DailySession&&(identical(other.sessionNumber, sessionNumber) || other.sessionNumber == sessionNumber)&&(identical(other.dayOfTheWeek, dayOfTheWeek) || other.dayOfTheWeek == dayOfTheWeek)&&(identical(other.sessionType, sessionType) || other.sessionType == sessionType)&&(identical(other.sessionFocus, sessionFocus) || other.sessionFocus == sessionFocus)&&(identical(other.warmUp, warmUp) || other.warmUp == warmUp)&&(identical(other.mainSession, mainSession) || other.mainSession == mainSession)&&(identical(other.coolDown, coolDown) || other.coolDown == coolDown));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,sessionNumber,dayOfTheWeek,sessionType,sessionFocus,warmUp,mainSession,coolDown,completeAt);
+int get hashCode => Object.hash(runtimeType,sessionNumber,dayOfTheWeek,sessionType,sessionFocus,warmUp,mainSession,coolDown);
 
 @override
 String toString() {
-  return 'DailySession(sessionNumber: $sessionNumber, dayOfTheWeek: $dayOfTheWeek, sessionType: $sessionType, sessionFocus: $sessionFocus, warmUp: $warmUp, mainSession: $mainSession, coolDown: $coolDown, completeAt: $completeAt)';
+  return 'DailySession(sessionNumber: $sessionNumber, dayOfTheWeek: $dayOfTheWeek, sessionType: $sessionType, sessionFocus: $sessionFocus, warmUp: $warmUp, mainSession: $mainSession, coolDown: $coolDown)';
 }
 
 
@@ -654,7 +655,7 @@ abstract mixin class _$DailySessionCopyWith<$Res> implements $DailySessionCopyWi
   factory _$DailySessionCopyWith(_DailySession value, $Res Function(_DailySession) _then) = __$DailySessionCopyWithImpl;
 @override @useResult
 $Res call({
- int? sessionNumber, String? dayOfTheWeek, String? sessionType, String? sessionFocus, SessionPhase? warmUp, SessionPhase? mainSession, SessionPhase? coolDown,@TimestampConverter() DateTime? completeAt
+ int? sessionNumber, String? dayOfTheWeek, String? sessionType, String? sessionFocus, SessionPhase? warmUp, SessionPhase? mainSession, SessionPhase? coolDown
 });
 
 
@@ -671,7 +672,7 @@ class __$DailySessionCopyWithImpl<$Res>
 
 /// Create a copy of DailySession
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? sessionNumber = freezed,Object? dayOfTheWeek = freezed,Object? sessionType = freezed,Object? sessionFocus = freezed,Object? warmUp = freezed,Object? mainSession = freezed,Object? coolDown = freezed,Object? completeAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? sessionNumber = freezed,Object? dayOfTheWeek = freezed,Object? sessionType = freezed,Object? sessionFocus = freezed,Object? warmUp = freezed,Object? mainSession = freezed,Object? coolDown = freezed,}) {
   return _then(_DailySession(
 sessionNumber: freezed == sessionNumber ? _self.sessionNumber : sessionNumber // ignore: cast_nullable_to_non_nullable
 as int?,dayOfTheWeek: freezed == dayOfTheWeek ? _self.dayOfTheWeek : dayOfTheWeek // ignore: cast_nullable_to_non_nullable
@@ -680,8 +681,7 @@ as String?,sessionFocus: freezed == sessionFocus ? _self.sessionFocus : sessionF
 as String?,warmUp: freezed == warmUp ? _self.warmUp : warmUp // ignore: cast_nullable_to_non_nullable
 as SessionPhase?,mainSession: freezed == mainSession ? _self.mainSession : mainSession // ignore: cast_nullable_to_non_nullable
 as SessionPhase?,coolDown: freezed == coolDown ? _self.coolDown : coolDown // ignore: cast_nullable_to_non_nullable
-as SessionPhase?,completeAt: freezed == completeAt ? _self.completeAt : completeAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as SessionPhase?,
   ));
 }
 

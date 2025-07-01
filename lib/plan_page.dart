@@ -67,6 +67,7 @@ class CreatePlanCard extends StatelessWidget {
             const SizedBox(width: 20),
             Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(

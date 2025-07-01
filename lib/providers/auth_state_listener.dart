@@ -37,6 +37,11 @@ class AuthStateListener {
         },
         loading: () {
           print('🔄 Auth state loading...');
+          // Only set initializing if we don't already have a user
+          final currentState = _ref.read(appStateProvider);
+          if (currentState.user == null) {
+            _ref.read(appStateProvider.notifier).setIsInitializing(true);
+          }
         },
         error: (error, stackTrace) {
           print('❌ Auth state error: $error');
@@ -65,13 +70,17 @@ class AuthStateListener {
       } else {
         print('❌ User not found in Firestore after 3 retries');
         // User authenticated but no Firestore document - this shouldn't happen
-        // but we should handle it gracefully
+        // but we should handle it gracefully by clearing the initialization state
+        _ref.read(appStateProvider.notifier).setIsInitializing(false);
       }
     } catch (error) {
       print('❌ Error fetching user from Firestore: $error');
       if (retryCount < 2) {
         await Future.delayed(Duration(milliseconds: 1000 * (retryCount + 1)));
         await _fetchUserWithRetry(uid, retryCount: retryCount + 1);
+      } else {
+        // After all retries failed, ensure we're not stuck in initializing state
+        _ref.read(appStateProvider.notifier).setIsInitializing(false);
       }
     }
   }

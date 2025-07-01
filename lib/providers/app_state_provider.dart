@@ -14,13 +14,20 @@ class AppStateNotifier extends StateNotifier<AppState> {
   AppStateNotifier(this._ref) : super(const AppState());
 
   void setUser(UserModel? user) {
-    state = state.copyWith(user: user);
+    print(
+      '🔄 AppStateNotifier: Setting user - ${user?.firstName} ${user?.lastName}',
+    );
+    state = state.copyWith(user: user, isInitializing: false);
     if (user != null) {
       _listenToTrainingPlans(user.uid);
     } else {
       _cancelTrainingPlansSubscription();
       state = state.copyWith(trainingPrograms: null);
     }
+  }
+
+  void setIsInitializing(bool isInitializing) {
+    state = state.copyWith(isInitializing: isInitializing);
   }
 
   void _listenToTrainingPlans(String uid) {
