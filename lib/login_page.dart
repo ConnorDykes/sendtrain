@@ -8,6 +8,7 @@ import 'package:sendtrain/providers/app_state_provider.dart';
 import 'package:sendtrain/services/firebase_auth_service.dart';
 import 'package:sendtrain/services/firestore_service.dart';
 import 'package:sendtrain/signup_page.dart';
+import 'package:sendtrain/widgets/shared/sendtrain_logo.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -147,7 +148,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _buildTitle(theme),
+                        const SendTrainLogo(),
                         const SizedBox(height: 8),
                         const SizedBox(height: 32),
                         _buildTextField(

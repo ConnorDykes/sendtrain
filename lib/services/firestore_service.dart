@@ -98,7 +98,7 @@ class FirestoreService {
     return _db
         .collection('users')
         .doc(uid)
-        .collection('training_plans')
+        .collection('trainingPlans')
         .doc(planId)
         .update({'startedAt': FieldValue.serverTimestamp()});
   }
@@ -110,7 +110,7 @@ class FirestoreService {
     await _db
         .collection('users')
         .doc(uid)
-        .collection('training_plans')
+        .collection('trainingPlans')
         .doc(trainingProgram.id)
         .set(trainingProgram.toJson());
   }

@@ -10,6 +10,10 @@ import 'package:sendtrain/training_form.dart';
 import 'package:sendtrain/widgets/shared/background_container.dart';
 import 'package:sendtrain/models/training_program/training_program.dart';
 import 'package:sendtrain/plan_page.dart';
+import 'package:sendtrain/widgets/shared/sendtrain_logo.dart';
+import 'package:collection/collection.dart';
+import 'package:sendtrain/widgets/shared/next_session_card.dart';
+import 'package:sendtrain/widgets/shared/weekly_calendar.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -23,6 +27,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
+      if (index == 2) {
+        ref.read(appStateProvider.notifier).setSelectedTrainingProgram(null);
+      }
       _selectedIndex = index;
     });
   }
@@ -33,7 +40,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     final user = ref.watch(appStateProvider).user;
 
     final List<Widget> pages = [
-      if (user != null) _HomeContent(user: user),
+      if (user != null)
+        _HomeContent(user: user, onViewPlan: () => _onItemTapped(2)),
       const ExplorePage(),
       const PlanPage(),
       if (user != null) ProfilePage(user: user),
@@ -79,34 +87,38 @@ class _HomePageState extends ConsumerState<HomePage> {
 
 class _HomeContent extends ConsumerWidget {
   final UserModel user;
-  const _HomeContent({required this.user});
+  final VoidCallback onViewPlan;
+  const _HomeContent({required this.user, required this.onViewPlan});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final appState = ref.watch(appStateProvider);
-    final trainingPrograms = appState.trainingPrograms;
+    final trainingPrograms = appState.trainingPrograms ?? [];
+    final activeProgram = trainingPrograms.firstWhereOrNull(
+      (p) => p.startedAt != null,
+    );
+    final hasActiveProgram = trainingPrograms.any((p) => p.startedAt != null);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Welcome Back, ${user.firstName ?? ''}',
-            style: theme.textTheme.headlineSmall?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
+          const SendTrainLogo(),
           const SizedBox(height: 32),
           if (appState.isGeneratingPlan)
             _buildGeneratingPlanCard(context)
-          else if (trainingPrograms != null && trainingPrograms.isNotEmpty) ...[
-            ...trainingPrograms.map((p) => _TrainingProgramCard(program: p)),
+          else if (trainingPrograms.isNotEmpty) ...[
+            if (activeProgram != null) ...[
+              NextSessionCard(program: activeProgram),
+              WeeklyCalendar(program: activeProgram),
+            ],
+            ...trainingPrograms.map(
+              (p) => _TrainingProgramCard(program: p, onViewPlan: onViewPlan),
+            ),
             const SizedBox(height: 24),
-            _buildSecondaryCreatePlanCard(context),
+            _buildSecondaryCreatePlanCard(context, hasActiveProgram),
           ] else
             const CreatePlanCard(),
           const SizedBox(height: 24),
@@ -150,14 +162,47 @@ class _HomeContent extends ConsumerWidget {
     );
   }
 
-  Widget _buildSecondaryCreatePlanCard(BuildContext context) {
+  Widget _buildSecondaryCreatePlanCard(
+    BuildContext context,
+    bool hasActiveProgram,
+  ) {
     final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const TrainingForm()),
-        );
+        if (hasActiveProgram) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Replace Active Plan?'),
+              content: const Text(
+                'You already have an active training plan. Creating a new one will remove your current plan. Are you sure you want to continue?',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TrainingForm(),
+                      ),
+                    );
+                  },
+                  child: const Text('Continue'),
+                ),
+              ],
+            ),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TrainingForm()),
+          );
+        }
       },
       child: _buildGlassmorphicCard(
         child: Padding(
@@ -183,7 +228,7 @@ class _HomeContent extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Let our custom fine-tunedAI craft a unique training system tailored to your goals.',
+                      'Let our custom AI craft a unique training system tailored to your goals.',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: Colors.white70,
                       ),
@@ -199,13 +244,14 @@ class _HomeContent extends ConsumerWidget {
   }
 }
 
-class _TrainingProgramCard extends StatelessWidget {
+class _TrainingProgramCard extends ConsumerWidget {
   final TrainingProgram program;
+  final VoidCallback onViewPlan;
 
-  const _TrainingProgramCard({required this.program});
+  const _TrainingProgramCard({required this.program, required this.onViewPlan});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(24),
@@ -239,9 +285,19 @@ class _TrainingProgramCard extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                // TODO: Navigate to the detailed plan view
+                ref
+                    .read(appStateProvider.notifier)
+                    .setSelectedTrainingProgram(program);
+                onViewPlan();
               },
-              child: const Text('View Plan'),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('View Plan'),
+                  const SizedBox(width: 8),
+                  const Icon(Icons.chevron_right, size: 20),
+                ],
+              ),
             ),
           ),
         ],

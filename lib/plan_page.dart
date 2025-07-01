@@ -1,22 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:sendtrain/agent_mockups/plan_display_1.dart';
-import 'package:sendtrain/agent_mockups/plan_display_2.dart';
-import 'package:sendtrain/agent_mockups/plan_display_3.dart';
-import 'package:sendtrain/agent_mockups/plan_display_4.dart';
-import 'package:sendtrain/agent_mockups/plan_display_5.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:sendtrain/home_page.dart';
+import 'package:sendtrain/models/training_program/training_program.dart';
 import 'package:sendtrain/plan_page_2.dart';
+import 'package:sendtrain/providers/app_state_provider.dart';
 import 'package:sendtrain/training_form.dart';
 import 'package:sendtrain/widgets/shared/background_container.dart';
 
-class PlanPage extends StatelessWidget {
+class PlanPage extends ConsumerWidget {
   const PlanPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appState = ref.watch(appStateProvider);
+    final TrainingProgram? selectedProgram = appState.selectedTrainingProgram;
+    final List<TrainingProgram> allPrograms = appState.trainingPrograms ?? [];
+
+    final TrainingProgram? programToDisplay =
+        selectedProgram ?? (allPrograms.isNotEmpty ? allPrograms.first : null);
+
+    return Scaffold(
       backgroundColor: Colors.transparent,
-      body: PlanPage2(),
+      body: programToDisplay != null
+          ? PlanPage2(program: programToDisplay)
+          : const Center(
+              child: Padding(
+                padding: EdgeInsets.all(24.0),
+                child: CreatePlanCard(),
+              ),
+            ),
     );
   }
 }

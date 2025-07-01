@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TrainingProgram {
 
- String? get id; String? get programTitle; String? get programFocus; int? get durationWeeks; String? get programDescripton; ProgramNotes? get programNotes; List<WeeklySession>? get weeklySchedule; List<GlossaryItem>? get glossary; DateTime? get startedAt;
+ String? get id; String? get programTitle; String? get programFocus; int? get durationWeeks; String? get programDescripton; ProgramNotes? get programNotes; List<WeeklySession>? get weeklySchedule; List<GlossaryItem>? get glossary;@TimestampConverter() DateTime? get startedAt;
 /// Create a copy of TrainingProgram
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $TrainingProgramCopyWith<$Res>  {
   factory $TrainingProgramCopyWith(TrainingProgram value, $Res Function(TrainingProgram) _then) = _$TrainingProgramCopyWithImpl;
 @useResult
 $Res call({
- String? id, String? programTitle, String? programFocus, int? durationWeeks, String? programDescripton, ProgramNotes? programNotes, List<WeeklySession>? weeklySchedule, List<GlossaryItem>? glossary, DateTime? startedAt
+ String? id, String? programTitle, String? programFocus, int? durationWeeks, String? programDescripton, ProgramNotes? programNotes, List<WeeklySession>? weeklySchedule, List<GlossaryItem>? glossary,@TimestampConverter() DateTime? startedAt
 });
 
 
@@ -100,7 +100,7 @@ $ProgramNotesCopyWith<$Res>? get programNotes {
 @JsonSerializable()
 
 class _TrainingProgram extends TrainingProgram {
-  const _TrainingProgram({this.id, this.programTitle, this.programFocus, this.durationWeeks, this.programDescripton, this.programNotes, final  List<WeeklySession>? weeklySchedule, final  List<GlossaryItem>? glossary, this.startedAt}): _weeklySchedule = weeklySchedule,_glossary = glossary,super._();
+  const _TrainingProgram({this.id, this.programTitle, this.programFocus, this.durationWeeks, this.programDescripton, this.programNotes, final  List<WeeklySession>? weeklySchedule, final  List<GlossaryItem>? glossary, @TimestampConverter() this.startedAt}): _weeklySchedule = weeklySchedule,_glossary = glossary,super._();
   factory _TrainingProgram.fromJson(Map<String, dynamic> json) => _$TrainingProgramFromJson(json);
 
 @override final  String? id;
@@ -127,7 +127,7 @@ class _TrainingProgram extends TrainingProgram {
   return EqualUnmodifiableListView(value);
 }
 
-@override final  DateTime? startedAt;
+@override@TimestampConverter() final  DateTime? startedAt;
 
 /// Create a copy of TrainingProgram
 /// with the given fields replaced by the non-null parameter values.
@@ -162,7 +162,7 @@ abstract mixin class _$TrainingProgramCopyWith<$Res> implements $TrainingProgram
   factory _$TrainingProgramCopyWith(_TrainingProgram value, $Res Function(_TrainingProgram) _then) = __$TrainingProgramCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String? programTitle, String? programFocus, int? durationWeeks, String? programDescripton, ProgramNotes? programNotes, List<WeeklySession>? weeklySchedule, List<GlossaryItem>? glossary, DateTime? startedAt
+ String? id, String? programTitle, String? programFocus, int? durationWeeks, String? programDescripton, ProgramNotes? programNotes, List<WeeklySession>? weeklySchedule, List<GlossaryItem>? glossary,@TimestampConverter() DateTime? startedAt
 });
 
 
@@ -502,7 +502,7 @@ as List<DailySession>?,
 /// @nodoc
 mixin _$DailySession {
 
- int? get sessionNumber; String? get dayOfTheWeek; String? get sessionType; String? get sessionFocus; SessionPhase? get warmUp; SessionPhase? get mainSession; SessionPhase? get coolDown;
+ int? get sessionNumber; String? get dayOfTheWeek; String? get sessionType; String? get sessionFocus; SessionPhase? get warmUp; SessionPhase? get mainSession; SessionPhase? get coolDown;@TimestampConverter() DateTime? get completeAt;
 /// Create a copy of DailySession
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -515,16 +515,16 @@ $DailySessionCopyWith<DailySession> get copyWith => _$DailySessionCopyWithImpl<D
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DailySession&&(identical(other.sessionNumber, sessionNumber) || other.sessionNumber == sessionNumber)&&(identical(other.dayOfTheWeek, dayOfTheWeek) || other.dayOfTheWeek == dayOfTheWeek)&&(identical(other.sessionType, sessionType) || other.sessionType == sessionType)&&(identical(other.sessionFocus, sessionFocus) || other.sessionFocus == sessionFocus)&&(identical(other.warmUp, warmUp) || other.warmUp == warmUp)&&(identical(other.mainSession, mainSession) || other.mainSession == mainSession)&&(identical(other.coolDown, coolDown) || other.coolDown == coolDown));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DailySession&&(identical(other.sessionNumber, sessionNumber) || other.sessionNumber == sessionNumber)&&(identical(other.dayOfTheWeek, dayOfTheWeek) || other.dayOfTheWeek == dayOfTheWeek)&&(identical(other.sessionType, sessionType) || other.sessionType == sessionType)&&(identical(other.sessionFocus, sessionFocus) || other.sessionFocus == sessionFocus)&&(identical(other.warmUp, warmUp) || other.warmUp == warmUp)&&(identical(other.mainSession, mainSession) || other.mainSession == mainSession)&&(identical(other.coolDown, coolDown) || other.coolDown == coolDown)&&(identical(other.completeAt, completeAt) || other.completeAt == completeAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,sessionNumber,dayOfTheWeek,sessionType,sessionFocus,warmUp,mainSession,coolDown);
+int get hashCode => Object.hash(runtimeType,sessionNumber,dayOfTheWeek,sessionType,sessionFocus,warmUp,mainSession,coolDown,completeAt);
 
 @override
 String toString() {
-  return 'DailySession(sessionNumber: $sessionNumber, dayOfTheWeek: $dayOfTheWeek, sessionType: $sessionType, sessionFocus: $sessionFocus, warmUp: $warmUp, mainSession: $mainSession, coolDown: $coolDown)';
+  return 'DailySession(sessionNumber: $sessionNumber, dayOfTheWeek: $dayOfTheWeek, sessionType: $sessionType, sessionFocus: $sessionFocus, warmUp: $warmUp, mainSession: $mainSession, coolDown: $coolDown, completeAt: $completeAt)';
 }
 
 
@@ -535,7 +535,7 @@ abstract mixin class $DailySessionCopyWith<$Res>  {
   factory $DailySessionCopyWith(DailySession value, $Res Function(DailySession) _then) = _$DailySessionCopyWithImpl;
 @useResult
 $Res call({
- int? sessionNumber, String? dayOfTheWeek, String? sessionType, String? sessionFocus, SessionPhase? warmUp, SessionPhase? mainSession, SessionPhase? coolDown
+ int? sessionNumber, String? dayOfTheWeek, String? sessionType, String? sessionFocus, SessionPhase? warmUp, SessionPhase? mainSession, SessionPhase? coolDown,@TimestampConverter() DateTime? completeAt
 });
 
 
@@ -552,7 +552,7 @@ class _$DailySessionCopyWithImpl<$Res>
 
 /// Create a copy of DailySession
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? sessionNumber = freezed,Object? dayOfTheWeek = freezed,Object? sessionType = freezed,Object? sessionFocus = freezed,Object? warmUp = freezed,Object? mainSession = freezed,Object? coolDown = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? sessionNumber = freezed,Object? dayOfTheWeek = freezed,Object? sessionType = freezed,Object? sessionFocus = freezed,Object? warmUp = freezed,Object? mainSession = freezed,Object? coolDown = freezed,Object? completeAt = freezed,}) {
   return _then(_self.copyWith(
 sessionNumber: freezed == sessionNumber ? _self.sessionNumber : sessionNumber // ignore: cast_nullable_to_non_nullable
 as int?,dayOfTheWeek: freezed == dayOfTheWeek ? _self.dayOfTheWeek : dayOfTheWeek // ignore: cast_nullable_to_non_nullable
@@ -561,7 +561,8 @@ as String?,sessionFocus: freezed == sessionFocus ? _self.sessionFocus : sessionF
 as String?,warmUp: freezed == warmUp ? _self.warmUp : warmUp // ignore: cast_nullable_to_non_nullable
 as SessionPhase?,mainSession: freezed == mainSession ? _self.mainSession : mainSession // ignore: cast_nullable_to_non_nullable
 as SessionPhase?,coolDown: freezed == coolDown ? _self.coolDown : coolDown // ignore: cast_nullable_to_non_nullable
-as SessionPhase?,
+as SessionPhase?,completeAt: freezed == completeAt ? _self.completeAt : completeAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 /// Create a copy of DailySession
@@ -608,7 +609,7 @@ $SessionPhaseCopyWith<$Res>? get coolDown {
 @JsonSerializable()
 
 class _DailySession implements DailySession {
-  const _DailySession({this.sessionNumber, this.dayOfTheWeek, this.sessionType, this.sessionFocus, this.warmUp, this.mainSession, this.coolDown});
+  const _DailySession({this.sessionNumber, this.dayOfTheWeek, this.sessionType, this.sessionFocus, this.warmUp, this.mainSession, this.coolDown, @TimestampConverter() this.completeAt});
   factory _DailySession.fromJson(Map<String, dynamic> json) => _$DailySessionFromJson(json);
 
 @override final  int? sessionNumber;
@@ -618,6 +619,7 @@ class _DailySession implements DailySession {
 @override final  SessionPhase? warmUp;
 @override final  SessionPhase? mainSession;
 @override final  SessionPhase? coolDown;
+@override@TimestampConverter() final  DateTime? completeAt;
 
 /// Create a copy of DailySession
 /// with the given fields replaced by the non-null parameter values.
@@ -632,16 +634,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DailySession&&(identical(other.sessionNumber, sessionNumber) || other.sessionNumber == sessionNumber)&&(identical(other.dayOfTheWeek, dayOfTheWeek) || other.dayOfTheWeek == dayOfTheWeek)&&(identical(other.sessionType, sessionType) || other.sessionType == sessionType)&&(identical(other.sessionFocus, sessionFocus) || other.sessionFocus == sessionFocus)&&(identical(other.warmUp, warmUp) || other.warmUp == warmUp)&&(identical(other.mainSession, mainSession) || other.mainSession == mainSession)&&(identical(other.coolDown, coolDown) || other.coolDown == coolDown));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DailySession&&(identical(other.sessionNumber, sessionNumber) || other.sessionNumber == sessionNumber)&&(identical(other.dayOfTheWeek, dayOfTheWeek) || other.dayOfTheWeek == dayOfTheWeek)&&(identical(other.sessionType, sessionType) || other.sessionType == sessionType)&&(identical(other.sessionFocus, sessionFocus) || other.sessionFocus == sessionFocus)&&(identical(other.warmUp, warmUp) || other.warmUp == warmUp)&&(identical(other.mainSession, mainSession) || other.mainSession == mainSession)&&(identical(other.coolDown, coolDown) || other.coolDown == coolDown)&&(identical(other.completeAt, completeAt) || other.completeAt == completeAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,sessionNumber,dayOfTheWeek,sessionType,sessionFocus,warmUp,mainSession,coolDown);
+int get hashCode => Object.hash(runtimeType,sessionNumber,dayOfTheWeek,sessionType,sessionFocus,warmUp,mainSession,coolDown,completeAt);
 
 @override
 String toString() {
-  return 'DailySession(sessionNumber: $sessionNumber, dayOfTheWeek: $dayOfTheWeek, sessionType: $sessionType, sessionFocus: $sessionFocus, warmUp: $warmUp, mainSession: $mainSession, coolDown: $coolDown)';
+  return 'DailySession(sessionNumber: $sessionNumber, dayOfTheWeek: $dayOfTheWeek, sessionType: $sessionType, sessionFocus: $sessionFocus, warmUp: $warmUp, mainSession: $mainSession, coolDown: $coolDown, completeAt: $completeAt)';
 }
 
 
@@ -652,7 +654,7 @@ abstract mixin class _$DailySessionCopyWith<$Res> implements $DailySessionCopyWi
   factory _$DailySessionCopyWith(_DailySession value, $Res Function(_DailySession) _then) = __$DailySessionCopyWithImpl;
 @override @useResult
 $Res call({
- int? sessionNumber, String? dayOfTheWeek, String? sessionType, String? sessionFocus, SessionPhase? warmUp, SessionPhase? mainSession, SessionPhase? coolDown
+ int? sessionNumber, String? dayOfTheWeek, String? sessionType, String? sessionFocus, SessionPhase? warmUp, SessionPhase? mainSession, SessionPhase? coolDown,@TimestampConverter() DateTime? completeAt
 });
 
 
@@ -669,7 +671,7 @@ class __$DailySessionCopyWithImpl<$Res>
 
 /// Create a copy of DailySession
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? sessionNumber = freezed,Object? dayOfTheWeek = freezed,Object? sessionType = freezed,Object? sessionFocus = freezed,Object? warmUp = freezed,Object? mainSession = freezed,Object? coolDown = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? sessionNumber = freezed,Object? dayOfTheWeek = freezed,Object? sessionType = freezed,Object? sessionFocus = freezed,Object? warmUp = freezed,Object? mainSession = freezed,Object? coolDown = freezed,Object? completeAt = freezed,}) {
   return _then(_DailySession(
 sessionNumber: freezed == sessionNumber ? _self.sessionNumber : sessionNumber // ignore: cast_nullable_to_non_nullable
 as int?,dayOfTheWeek: freezed == dayOfTheWeek ? _self.dayOfTheWeek : dayOfTheWeek // ignore: cast_nullable_to_non_nullable
@@ -678,7 +680,8 @@ as String?,sessionFocus: freezed == sessionFocus ? _self.sessionFocus : sessionF
 as String?,warmUp: freezed == warmUp ? _self.warmUp : warmUp // ignore: cast_nullable_to_non_nullable
 as SessionPhase?,mainSession: freezed == mainSession ? _self.mainSession : mainSession // ignore: cast_nullable_to_non_nullable
 as SessionPhase?,coolDown: freezed == coolDown ? _self.coolDown : coolDown // ignore: cast_nullable_to_non_nullable
-as SessionPhase?,
+as SessionPhase?,completeAt: freezed == completeAt ? _self.completeAt : completeAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

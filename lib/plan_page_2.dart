@@ -11,6 +11,8 @@ import 'package:sendtrain/services/firestore_service.dart';
 import 'package:sendtrain/widgets/shared/background_container.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:math';
+import 'package:sendtrain/session_detail_view.dart';
+import 'package:sendtrain/widgets/shared/next_session_card.dart';
 
 // Note: This mockup uses 'fl_chart', which might need to be added to your pubspec.yaml
 // if it's not already there from the previous mockups.
@@ -18,25 +20,16 @@ import 'dart:math';
 //   fl_chart: ^0.68.0
 
 class PlanPage2 extends ConsumerWidget {
-  const PlanPage2({super.key});
+  final TrainingProgram program;
+  const PlanPage2({super.key, required this.program});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AppState appState = ref.watch(appStateProvider);
-    final TrainingProgram? program =
-        appState.trainingPrograms?.isNotEmpty ?? false
-        ? appState.trainingPrograms!.first
-        : null;
-
     return Theme(
       data: _buildTheme(context),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: BackgroundContainer(
-          child: program == null
-              ? const Center(child: Text('No Training Plan Found'))
-              : SuperPlanView(program: program),
-        ),
+        body: BackgroundContainer(child: SuperPlanView(program: program)),
       ),
     );
   }
@@ -248,6 +241,146 @@ class Header extends StatelessWidget {
   }
 }
 
+class _UpcomingSession {
+  final DailySession session;
+  final DateTime date;
+  _UpcomingSession(this.session, this.date);
+}
+
+_UpcomingSession? _findNextSession(Map<DateTime, List<DailySession>> events) {
+  final today = DateTime.now();
+  final todayDateOnly = DateTime(today.year, today.month, today.day);
+
+  // Get all future or today's dates with events, and sort them
+  final upcomingDates =
+      events.keys.where((date) => !date.isBefore(todayDateOnly)).toList()
+        ..sort();
+
+  if (upcomingDates.isEmpty) {
+    return null;
+  }
+
+  final nextSessionDate = upcomingDates.first;
+  final nextSessions = events[nextSessionDate];
+
+  if (nextSessions == null || nextSessions.isEmpty) {
+    return null;
+  }
+
+  return _UpcomingSession(nextSessions.first, nextSessionDate);
+}
+
+class _NextSessionCard extends StatelessWidget {
+  final DailySession session;
+  final DateTime date;
+
+  const _NextSessionCard({required this.session, required this.date});
+
+  String _formatDate(BuildContext context) {
+    final today = DateTime.now();
+    final tomorrow = today.add(const Duration(days: 1));
+
+    if (isSameDay(date, today)) {
+      return 'Today';
+    } else if (isSameDay(date, tomorrow)) {
+      return 'Tomorrow';
+    } else {
+      return DateFormat('E, MMM d').format(date);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SessionDetailView(session: session),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 24),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              theme.colorScheme.secondary.withOpacity(0.4),
+              theme.colorScheme.primary.withOpacity(0.4),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: theme.colorScheme.secondary.withOpacity(0.7),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.secondary.withOpacity(0.2),
+              blurRadius: 10,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Next Session',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    _formatDate(context),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.white70,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          session.sessionType ?? 'Workout',
+                          style: theme.textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: 4),
+                        if (session.sessionFocus != null)
+                          Text(
+                            session.sessionFocus!,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: Colors.white70,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right, color: Colors.white70),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 // --- Combination of PlanDisplay4 and PlanDisplay5 ---
 class AgendaViewWithStats extends StatelessWidget {
   final TrainingProgram program;
@@ -265,40 +398,40 @@ class AgendaViewWithStats extends StatelessWidget {
         children: [
           ProgramInfoCard(program: program),
           const SizedBox(height: 24),
+          NextSessionCard(program: program),
           const Center(child: Text("No weekly schedule found.")),
         ],
       );
     }
 
-    return ListView.builder(
+    return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: schedule.length + 1,
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 24),
-            child: ProgramInfoCard(program: program),
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 24),
+          child: ProgramInfoCard(program: program),
+        ),
+        NextSessionCard(program: program),
+        ...sortedSchedule.asMap().entries.map((entry) {
+          final index = entry.key;
+          final currentSession = entry.value;
+
+          int? nextWeekStart;
+          if (index + 1 < sortedSchedule.length) {
+            nextWeekStart = sortedSchedule[index + 1].week;
+          }
+
+          final endWeek = (nextWeekStart != null
+              ? nextWeekStart - 1
+              : program.durationWeeks);
+
+          return WeekCard(
+            key: ValueKey('week_card_${currentSession.week}'),
+            weeklySession: currentSession,
+            endWeek: endWeek,
           );
-        }
-
-        final scheduleIndex = index - 1;
-        final currentSession = schedule[scheduleIndex];
-
-        int? nextWeekStart;
-        if (scheduleIndex + 1 < schedule.length) {
-          nextWeekStart = schedule[scheduleIndex + 1].week;
-        }
-
-        final endWeek = (nextWeekStart != null
-            ? nextWeekStart - 1
-            : program.durationWeeks);
-
-        return WeekCard(
-          key: ValueKey('week_card_${currentSession.week}'),
-          weeklySession: currentSession,
-          endWeek: endWeek,
-        );
-      },
+        }),
+      ],
     );
   }
 }
@@ -311,6 +444,13 @@ class ProgramInfoCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+
+    final startDate = program.startedAt;
+    DateTime? endDate;
+    if (startDate != null && program.durationWeeks != null) {
+      endDate = startDate.add(Duration(days: program.durationWeeks! * 7));
+    }
+
     return GlassmorphicContainer(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -329,13 +469,38 @@ class ProgramInfoCard extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 16),
-            if (program.programNotes != null)
-              GestureDetector(
-                onTap: () => _showNotesDialog(context, program.programNotes!),
-                child: const InfoChip(label: 'View Notes'),
-              ),
-            if (program.startedAt == null) ...[
-              const SizedBox(height: 24),
+            Row(
+              children: [
+                if (program.glossary != null)
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () =>
+                          _showGlossaryDialog(context, program.glossary!),
+                      child: const InfoChip(
+                        label: 'Glossary',
+                        icon: Icons.book_outlined,
+                      ),
+                    ),
+                  ),
+                SizedBox(width: 12),
+                if (program.programNotes != null)
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () =>
+                          _showNotesDialog(context, program.programNotes!),
+                      child: const InfoChip(
+                        label: 'Notes',
+                        icon: Icons.notes_outlined,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+
+            const SizedBox(height: 24),
+            if (startDate != null)
+              _buildDateInfo(theme, startDate, endDate)
+            else
               GradientButton(
                 text: 'Start Now',
                 onPressed: () {
@@ -347,9 +512,85 @@ class ProgramInfoCard extends ConsumerWidget {
                   }
                 },
               ),
-            ],
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildDateInfo(
+    ThemeData theme,
+    DateTime startDate,
+    DateTime? endDate,
+  ) {
+    final DateFormat formatter = DateFormat('MMMM d, yyyy');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Started At:', style: theme.textTheme.bodyMedium),
+            Text(formatter.format(startDate), style: theme.textTheme.bodyLarge),
+          ],
+        ),
+        if (endDate != null) ...[
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Ends At:', style: theme.textTheme.bodyMedium),
+              Text(formatter.format(endDate), style: theme.textTheme.bodyLarge),
+            ],
+          ),
+        ],
+      ],
+    );
+  }
+
+  void _showGlossaryDialog(BuildContext context, List<GlossaryItem> glossary) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1F1E3D),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Glossary', style: TextStyle(color: Colors.white)),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: glossary.length,
+            itemBuilder: (context, index) {
+              final item = glossary[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.term ?? 'Term',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      item.definition ?? 'No definition.',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Close',
+              style: TextStyle(color: Color(0xFF40E0D0)),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -423,21 +664,24 @@ class ProgramInfoCard extends ConsumerWidget {
 
 class InfoChip extends StatelessWidget {
   final String label;
+  final IconData? icon;
 
-  const InfoChip({super.key, required this.label});
+  const InfoChip({super.key, required this.label, this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.white.withOpacity(0.3)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          if (icon != null) Icon(icon),
+          const SizedBox(width: 4),
           Text(
             label,
             style: TextStyle(
@@ -642,33 +886,62 @@ class DayTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
             width: 80,
             child: Text(
               session.dayOfTheWeek ?? "Day",
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall?.copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  session.sessionType ?? "Session",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                if (session.sessionFocus != null)
-                  Text(
-                    session.sessionFocus!,
-                    style: Theme.of(context).textTheme.bodySmall,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SessionDetailView(session: session),
                   ),
-              ],
+                );
+              },
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Theme.of(
+                    context,
+                  ).scaffoldBackgroundColor.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            session.sessionType ?? "Session",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(
+                      Icons.chevron_right,
+                      color: Colors.white70,
+                      applyTextScaling: true,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -765,22 +1038,41 @@ class CalendarWithGestures extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassmorphicContainer(
-      child: TableCalendar<DailySession>(
-        firstDay: DateTime.utc(2020, 1, 1),
-        lastDay: DateTime.utc(2030, 12, 31),
-        focusedDay: focusedDay,
-        selectedDayPredicate: (day) => isSameDay(selectedDay, day),
-        calendarFormat: calendarFormat,
-        eventLoader: (day) =>
-            events[DateTime(day.year, day.month, day.day)] ?? [],
-        onDaySelected: onDaySelected,
-        onFormatChanged: onFormatChanged,
-        onPageChanged: onPageChanged,
-        calendarBuilders: _calendarBuilders(),
-        headerStyle: _headerStyle(),
-        calendarStyle: _calendarStyle(),
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withOpacity(0.3)),
       ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TableCalendar<DailySession>(
+          firstDay: DateTime.utc(2020, 1, 1),
+          lastDay: DateTime.utc(2030, 12, 31),
+          focusedDay: focusedDay,
+          selectedDayPredicate: (day) => isSameDay(selectedDay, day),
+          calendarFormat: calendarFormat,
+          eventLoader: (day) =>
+              events[DateTime(day.year, day.month, day.day)] ?? [],
+          onDaySelected: onDaySelected,
+          onFormatChanged: onFormatChanged,
+          onPageChanged: onPageChanged,
+          calendarBuilders: _calendarBuilders(),
+          headerStyle: _headerStyle(),
+          daysOfWeekStyle: _daysOfWeekStyle(),
+          calendarStyle: _calendarStyle(),
+        ),
+      ),
+    );
+  }
+
+  DaysOfWeekStyle _daysOfWeekStyle() {
+    return const DaysOfWeekStyle(
+      weekdayStyle: TextStyle(
+        color: Colors.white70,
+        fontWeight: FontWeight.bold,
+      ),
+      weekendStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
     );
   }
 
@@ -789,14 +1081,11 @@ class CalendarWithGestures extends StatelessWidget {
       markerBuilder: (context, date, events) {
         if (events.isNotEmpty) {
           return Positioned(
-            right: 1,
-            bottom: 1,
+            bottom: 8,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [const Color(0xFF8A2BE2), const Color(0xFF40E0D0)],
-                ),
+                color: Color(0xFF40E0D0),
               ),
               width: 8,
               height: 8,
@@ -804,6 +1093,54 @@ class CalendarWithGestures extends StatelessWidget {
           );
         }
         return null;
+      },
+      defaultBuilder: (context, day, focusedDay) {
+        return Container(
+          margin: const EdgeInsets.all(2.0),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(6.0),
+          ),
+          child: Center(
+            child: Text(
+              '${day.day}',
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      },
+      todayBuilder: (context, day, focusedDay) {
+        return Container(
+          margin: const EdgeInsets.all(2.0),
+          decoration: BoxDecoration(
+            color: const Color(0xFF007BFF).withOpacity(0.3),
+            borderRadius: BorderRadius.circular(6.0),
+          ),
+          child: Center(
+            child: Text(
+              '${day.day}',
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      },
+      selectedBuilder: (context, day, focusedDay) {
+        return Container(
+          margin: const EdgeInsets.all(2.0),
+          decoration: BoxDecoration(
+            color: const Color(0xFF8A2BE2),
+            borderRadius: BorderRadius.circular(6.0),
+          ),
+          child: Center(
+            child: Text(
+              '${day.day}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
       },
     );
   }
@@ -814,7 +1151,7 @@ class CalendarWithGestures extends StatelessWidget {
       formatButtonShowsNext: false,
       formatButtonTextStyle: const TextStyle(color: Colors.white),
       formatButtonDecoration: BoxDecoration(
-        color: const Color(0xFF8A2BE2).withOpacity(0.5),
+        color: Color(0xFF007BFF),
         borderRadius: BorderRadius.circular(20),
       ),
       titleTextStyle: const TextStyle(
@@ -828,28 +1165,9 @@ class CalendarWithGestures extends StatelessWidget {
   }
 
   CalendarStyle _calendarStyle() {
-    return CalendarStyle(
+    return const CalendarStyle(
       outsideDaysVisible: false,
-      defaultTextStyle: const TextStyle(color: Colors.white70),
-      weekendTextStyle: const TextStyle(color: Colors.white),
-      selectedTextStyle: const TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-      ),
-      todayDecoration: BoxDecoration(
-        color: const Color(0xFF007BFF).withOpacity(0.5),
-        shape: BoxShape.circle,
-      ),
-      selectedDecoration: BoxDecoration(
-        color: const Color(0xFF8A2BE2),
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF8A2BE2).withOpacity(0.7),
-            blurRadius: 5,
-          ),
-        ],
-      ),
+      // All styling is now handled by calendarBuilders
     );
   }
 }
@@ -941,17 +1259,28 @@ class SessionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassmorphicContainer(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      borderRadius: 15,
-      child: ListTile(
-        title: Text(
-          session.sessionType ?? 'Session',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        subtitle: Text(
-          session.sessionFocus ?? 'No focus',
-          style: Theme.of(context).textTheme.bodySmall,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SessionDetailView(session: session),
+          ),
+        );
+      },
+      child: GlassmorphicContainer(
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
+        borderRadius: 15,
+        child: ListTile(
+          title: Text(
+            session.sessionType ?? 'Session',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          subtitle: Text(
+            session.sessionFocus ?? 'No focus',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          trailing: const Icon(Icons.chevron_right, color: Colors.white70),
         ),
       ),
     );
@@ -963,28 +1292,44 @@ Map<DateTime, List<DailySession>> _getEventsForProgram(
   TrainingProgram program,
 ) {
   final Map<DateTime, List<DailySession>> events = {};
-  final today = DateTime.now();
-  // Simple start date: today. A more robust implementation might use a program start date.
-  final startOfProgram = today.subtract(Duration(days: today.weekday - 1));
+  if (program.durationWeeks == null || program.durationWeeks == 0) {
+    return events;
+  }
 
-  program.weeklySchedule?.forEach((weeklySession) {
-    final weekOffset = (weeklySession.week ?? 1) - 1;
-    weeklySession.dailySessions?.forEach((dailySession) {
-      final dayOfWeek = _dayOfWeekToInt(dailySession.dayOfTheWeek ?? '');
-      if (dayOfWeek != -1) {
-        final sessionDate = startOfProgram.add(
-          Duration(days: weekOffset * 7 + dayOfWeek - 1),
-        );
-        final dateOnly = DateTime(
-          sessionDate.year,
-          sessionDate.month,
-          sessionDate.day,
-        );
-        if (events[dateOnly] == null) events[dateOnly] = [];
-        events[dateOnly]!.add(dailySession);
-      }
-    });
-  });
+  final programStartDate = program.startedAt ?? DateTime.now();
+
+  // Use the program's start date to determine the first day of the first week (e.g., Monday).
+  final startOfFirstProgramWeek = programStartDate.subtract(
+    Duration(days: programStartDate.weekday - 1),
+  );
+
+  // Iterate through every week of the program's duration
+  for (int week = 1; week <= program.durationWeeks!; week++) {
+    // Get the correct weekly session, filling in gaps
+    final weeklySession = program.getWeeklySessionForWeek(week);
+
+    if (weeklySession != null) {
+      final weekOffset = week - 1;
+      weeklySession.dailySessions?.forEach((dailySession) {
+        final dayOfWeek = _dayOfWeekToInt(dailySession.dayOfTheWeek ?? '');
+        if (dayOfWeek != -1) {
+          // Calculate the session date for the current week.
+          final sessionDate = startOfFirstProgramWeek.add(
+            Duration(days: weekOffset * 7 + dayOfWeek - 1),
+          );
+          final dateOnly = DateTime(
+            sessionDate.year,
+            sessionDate.month,
+            sessionDate.day,
+          );
+          if (events[dateOnly] == null) {
+            events[dateOnly] = [];
+          }
+          events[dateOnly]!.add(dailySession);
+        }
+      });
+    }
+  }
   return events;
 }
 

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sendtrain/models/timestamp_converter.dart';
 
 part 'training_program.freezed.dart';
 part 'training_program.g.dart';
@@ -16,7 +17,7 @@ abstract class TrainingProgram with _$TrainingProgram {
     ProgramNotes? programNotes,
     List<WeeklySession>? weeklySchedule,
     List<GlossaryItem>? glossary,
-    DateTime? startedAt,
+    @TimestampConverter() DateTime? startedAt,
   }) = _TrainingProgram;
 
   factory TrainingProgram.fromJson(Map<String, dynamic> json) =>
@@ -89,6 +90,7 @@ abstract class DailySession with _$DailySession {
     SessionPhase? warmUp,
     SessionPhase? mainSession,
     SessionPhase? coolDown,
+
   }) = _DailySession;
 
   factory DailySession.fromJson(Map<String, dynamic> json) =>

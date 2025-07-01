@@ -64,6 +64,14 @@ class AppStateNotifier extends StateNotifier<AppState> {
     _trainingPlansSubscription?.cancel();
   }
 
+  void doneGeneratingPlan() {
+    state = state.copyWith(isGeneratingPlan: false);
+  }
+
+  void setSelectedTrainingProgram(TrainingProgram? program) {
+    state = state.copyWith(selectedTrainingProgram: program);
+  }
+
   @override
   void dispose() {
     _cancelTrainingPlansSubscription();

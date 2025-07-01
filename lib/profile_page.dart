@@ -18,8 +18,7 @@ class ProfilePage extends ConsumerWidget {
           SizedBox(height: MediaQuery.of(context).padding.top + 50),
           _buildProfileHeader(context),
           const SizedBox(height: 24),
-          _buildStatsCard(context),
-          const SizedBox(height: 24),
+
           _buildOptionsList(context, ref),
         ],
       ),
@@ -55,35 +54,6 @@ class ProfilePage extends ConsumerWidget {
           style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white70),
         ),
       ],
-    );
-  }
-
-  Widget _buildStatsCard(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.2)),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _StatItem(count: '12k', label: 'Followers'),
-                _StatItem(count: '1.2k', label: 'Following'),
-                _StatItem(count: '32', label: 'Projects'),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 

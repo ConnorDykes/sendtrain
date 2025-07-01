@@ -9,6 +9,9 @@ abstract class AppState with _$AppState {
   const factory AppState({
     UserModel? user,
     List<TrainingProgram>? trainingPrograms,
+    TrainingProgram? selectedTrainingProgram,
     @Default(false) bool isGeneratingPlan,
   }) = _AppState;
+
+  factory AppState.initial() => const AppState();
 }

@@ -22,9 +22,7 @@ _TrainingProgram _$TrainingProgramFromJson(Map<String, dynamic> json) =>
       glossary: (json['glossary'] as List<dynamic>?)
           ?.map((e) => GlossaryItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      startedAt: json['startedAt'] == null
-          ? null
-          : DateTime.parse(json['startedAt'] as String),
+      startedAt: const TimestampConverter().fromJson(json['startedAt']),
     );
 
 Map<String, dynamic> _$TrainingProgramToJson(_TrainingProgram instance) =>
@@ -37,7 +35,7 @@ Map<String, dynamic> _$TrainingProgramToJson(_TrainingProgram instance) =>
       'programNotes': instance.programNotes,
       'weeklySchedule': instance.weeklySchedule,
       'glossary': instance.glossary,
-      'startedAt': instance.startedAt?.toIso8601String(),
+      'startedAt': const TimestampConverter().toJson(instance.startedAt),
     };
 
 _ProgramNotes _$ProgramNotesFromJson(Map<String, dynamic> json) =>
@@ -87,6 +85,7 @@ _DailySession _$DailySessionFromJson(Map<String, dynamic> json) =>
       coolDown: json['coolDown'] == null
           ? null
           : SessionPhase.fromJson(json['coolDown'] as Map<String, dynamic>),
+      completeAt: const TimestampConverter().fromJson(json['completeAt']),
     );
 
 Map<String, dynamic> _$DailySessionToJson(_DailySession instance) =>
@@ -98,6 +97,7 @@ Map<String, dynamic> _$DailySessionToJson(_DailySession instance) =>
       'warmUp': instance.warmUp,
       'mainSession': instance.mainSession,
       'coolDown': instance.coolDown,
+      'completeAt': const TimestampConverter().toJson(instance.completeAt),
     };
 
 _SessionPhase _$SessionPhaseFromJson(Map<String, dynamic> json) =>
