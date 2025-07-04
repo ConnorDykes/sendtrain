@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:sendtrain/models/training_form/training_form_model.dart';
 import 'package:sendtrain/providers/app_state_provider.dart';
 import 'package:sendtrain/services/firestore_service.dart';
+import 'package:sendtrain/services/subscriptions_service.dart';
 import 'package:sendtrain/widgets/shared/background_container.dart';
 import 'package:sendtrain/providers/program_provider.dart';
 import 'package:sendtrain/services/notification_service.dart';
@@ -588,6 +589,25 @@ class _TrainingFormState extends ConsumerState<TrainingForm> {
         ),
       );
       return;
+    }
+
+    final subscriptionsService = ref.read(subscriptionsServiceProvider);
+    final isSubscribed = await subscriptionsService.isSubscribed();
+
+    if (!isSubscribed) {
+      await subscriptionsService.showPaywall();
+      final isNowSubscribed = await subscriptionsService.isSubscribed();
+      if (!isNowSubscribed) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('You must subscribe to create training plans.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return;
+      }
     }
 
     // Request notification permissions first

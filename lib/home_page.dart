@@ -13,6 +13,7 @@ import 'package:sendtrain/widgets/shared/sendtrain_logo.dart';
 import 'package:collection/collection.dart';
 import 'package:sendtrain/widgets/shared/next_session_card.dart';
 import 'package:sendtrain/widgets/shared/weekly_calendar.dart';
+import 'package:sendtrain/services/subscriptions_service.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -26,9 +27,6 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      if (index == 1) {
-        ref.read(appStateProvider.notifier).setSelectedTrainingProgram(null);
-      }
       _selectedIndex = index;
     });
   }
@@ -86,13 +84,8 @@ class _HomeContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final appState = ref.watch(appStateProvider);
-    final trainingPrograms = appState.trainingPrograms ?? [];
-    final activeProgram = trainingPrograms.firstWhereOrNull(
-      (p) => p.startedAt != null,
-    );
-    final hasActiveProgram = trainingPrograms.any((p) => p.startedAt != null);
+    final activeProgramAsync = ref.watch(activeTrainingProgramProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24.0),
@@ -103,111 +96,47 @@ class _HomeContent extends ConsumerWidget {
           const SizedBox(height: 32),
           if (appState.isGeneratingPlan)
             _buildGeneratingPlanCard(context)
-          else if (trainingPrograms.isNotEmpty) ...[
-            if (activeProgram != null) ...[
-              NextSessionCard(program: activeProgram),
-              WeeklyCalendar(program: activeProgram),
-            ],
-            ...trainingPrograms.map(
-              (p) => _TrainingProgramCard(program: p, onViewPlan: onViewPlan),
+          else
+            activeProgramAsync.when(
+              data: (activeProgram) {
+                if (activeProgram != null) {
+                  return Column(
+                    children: [
+                      NextSessionCard(program: activeProgram),
+                      const SizedBox(height: 16),
+                      WeeklyCalendar(program: activeProgram),
+                      const SizedBox(height: 16),
+                      _TrainingProgramCard(
+                        program: activeProgram,
+                        onViewPlan: onViewPlan,
+                      ),
+                    ],
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) =>
+                  const Text('Error loading training plan.'),
             ),
-            const SizedBox(height: 24),
-            _buildSecondaryCreatePlanCard(
-              context,
-              hasActiveProgram,
-              trainingPrograms,
-            ),
-          ] else
-            const CreatePlanCard(),
+          const SizedBox(height: 24),
+          _buildCreatePlanCard(context, ref),
           const SizedBox(height: 24),
         ],
       ),
     );
   }
 
-  Widget _buildGeneratingPlanCard(BuildContext context) {
-    final theme = Theme.of(context);
-    return _buildGlassmorphicCard(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        child: Row(
-          children: [
-            CircularProgressIndicator(color: theme.colorScheme.secondary),
-            SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Generating Your Personalized Plan...',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'This can take a number of minutes. We will notify you when it is ready.',
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  void _handleCreatePlan(BuildContext context, WidgetRef ref) {
+    final activeProgram = ref.watch(activeTrainingProgramProvider).value;
 
-  bool _hasReachedGenerationLimit(List<TrainingProgram> programs) {
-    final thirtyDaysAgo = DateTime.now().subtract(const Duration(days: 30));
-    final recentPlans = programs.where((program) {
-      // Note: Using createdAt if available, otherwise falling back to a reasonable default
-      final createdDate = program.startedAt ?? DateTime.now();
-      return createdDate.isAfter(thirtyDaysAgo);
-    }).length;
-
-    return recentPlans >= 3;
-  }
-
-  void _showGenerationLimitDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Plan Generation Limit Reached'),
-        content: const Text(
-          'Oops, you\'ve reached your limit on plan generation for this month. You can only generate 3 plans every 30 days.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _handleCreatePlan(
-    BuildContext context,
-    List<TrainingProgram> trainingPrograms,
-  ) {
-    // Check generation limit first
-    if (_hasReachedGenerationLimit(trainingPrograms)) {
-      _showGenerationLimitDialog(context);
-      return;
-    }
-
-    final hasActiveProgram = trainingPrograms.any((p) => p.startedAt != null);
-
-    if (hasActiveProgram) {
+    if (activeProgram != null) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Replace Active Plan?'),
           content: const Text(
-            'You already have an active training plan. Creating a new one will remove your current plan. Are you sure you want to continue?',
+            'You already have an active training plan. Creating a new one will archive your current plan. Are you sure you want to continue?',
           ),
           actions: [
             TextButton(
@@ -235,15 +164,12 @@ class _HomeContent extends ConsumerWidget {
     }
   }
 
-  Widget _buildSecondaryCreatePlanCard(
-    BuildContext context,
-    bool hasActiveProgram,
-    List<TrainingProgram> trainingPrograms,
-  ) {
+  Widget _buildCreatePlanCard(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final activeProgram = ref.watch(activeTrainingProgramProvider).value;
 
     return GestureDetector(
-      onTap: () => _handleCreatePlan(context, trainingPrograms),
+      onTap: () => _handleCreatePlan(context, ref),
       child: _buildGlassmorphicCard(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -260,7 +186,9 @@ class _HomeContent extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Create A Training Plan',
+                      activeProgram != null
+                          ? 'Create New Plan'
+                          : 'Create a Training Plan',
                       style: theme.textTheme.titleLarge?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -282,6 +210,41 @@ class _HomeContent extends ConsumerWidget {
       ),
     );
   }
+
+  Widget _buildGeneratingPlanCard(BuildContext context) {
+    final theme = Theme.of(context);
+    return _buildGlassmorphicCard(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Row(
+          children: [
+            CircularProgressIndicator(color: theme.colorScheme.secondary),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Generating Your Personalized Plan...',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'This can take a number of minutes. We will notify you when it is ready.',
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _TrainingProgramCard extends ConsumerWidget {
@@ -293,6 +256,8 @@ class _TrainingProgramCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isPremium = ref.watch(appStateProvider).user?.isPremium ?? false;
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -325,10 +290,36 @@ class _TrainingProgramCard extends ConsumerWidget {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                ref
-                    .read(appStateProvider.notifier)
-                    .setSelectedTrainingProgram(program);
-                onViewPlan();
+                if (isPremium) {
+                  onViewPlan();
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext dialogContext) => AlertDialog(
+                      title: const Text('Subscription Required'),
+                      content: const Text(
+                        'You must have an active subscription to view your training plans.',
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('Subscribe'),
+                          onPressed: () {
+                            Navigator.of(dialogContext).pop();
+                            ref
+                                .read(subscriptionsServiceProvider)
+                                .showPaywall();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                }
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -431,89 +422,4 @@ Widget _buildPlanItem(
       ],
     ),
   );
-}
-
-class CreatePlanCard extends ConsumerWidget {
-  const CreatePlanCard({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final appState = ref.watch(appStateProvider);
-    final trainingPrograms = appState.trainingPrograms ?? [];
-
-    return GestureDetector(
-      onTap: () {
-        // Check generation limit first
-        final thirtyDaysAgo = DateTime.now().subtract(const Duration(days: 30));
-        final recentPlans = trainingPrograms.where((program) {
-          final createdDate = program.startedAt ?? DateTime.now();
-          return createdDate.isAfter(thirtyDaysAgo);
-        }).length;
-
-        if (recentPlans >= 3) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Plan Generation Limit Reached'),
-              content: const Text(
-                'Oops, you\'ve reached your limit on plan generation for this month. You can only generate 3 plans every 30 days.',
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          );
-          return;
-        }
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const TrainingForm()),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withOpacity(0.2)),
-        ),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.auto_awesome_outlined,
-              color: Colors.white,
-              size: 40,
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Create A Training Plan',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Let our custom AI craft a unique training system tailored to your goals.',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.white70,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

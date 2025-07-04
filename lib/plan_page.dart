@@ -5,6 +5,7 @@ import 'package:sendtrain/home_page.dart';
 import 'package:sendtrain/models/training_program/training_program.dart';
 import 'package:sendtrain/plan_page_2.dart';
 import 'package:sendtrain/providers/app_state_provider.dart';
+import 'package:sendtrain/services/subscriptions_service.dart';
 import 'package:sendtrain/training_form.dart';
 import 'package:sendtrain/widgets/shared/background_container.dart';
 
@@ -14,22 +15,73 @@ class PlanPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appState = ref.watch(appStateProvider);
-    final TrainingProgram? selectedProgram = appState.selectedTrainingProgram;
-    final List<TrainingProgram> allPrograms = appState.trainingPrograms ?? [];
-
-    final TrainingProgram? programToDisplay =
-        selectedProgram ?? (allPrograms.isNotEmpty ? allPrograms.first : null);
+    final isPremium = appState.user?.isPremium ?? false;
+    final activeProgramAsync = ref.watch(activeTrainingProgramProvider);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: programToDisplay != null
-          ? PlanPage2(program: programToDisplay)
-          : const Center(
+      body: activeProgramAsync.when(
+        data: (programToDisplay) {
+          if (programToDisplay != null) {
+            return isPremium
+                ? PlanDetailView(program: programToDisplay)
+                : const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(24.0),
+                      child: PremiumBlocker(),
+                    ),
+                  );
+          } else {
+            return const Center(
               child: Padding(
                 padding: EdgeInsets.all(24.0),
                 child: CreatePlanCard(),
               ),
+            );
+          }
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => const Center(child: Text('Error loading plan.')),
+      ),
+    );
+  }
+}
+
+class PremiumBlocker extends ConsumerWidget {
+  const PremiumBlocker({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface.withOpacity(0.8),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'You must have a premium subscription to access your plan',
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: theme.colorScheme.onSurface,
             ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              ref.read(subscriptionsServiceProvider).showPaywall();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: theme.colorScheme.primary,
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            ),
+            child: const Text('Subscribe'),
+          ),
+        ],
+      ),
     );
   }
 }

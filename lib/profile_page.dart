@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sendtrain/models/user/user_model.dart';
 import 'package:sendtrain/providers/app_state_provider.dart';
+import 'package:sendtrain/subscription_setting_page.dart';
 
 class ProfilePage extends ConsumerWidget {
   final UserModel user;
@@ -62,7 +63,18 @@ class ProfilePage extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Column(
         children: [
-          _buildOptionTile(context, icon: Icons.payment, title: 'Subscripton'),
+          _buildOptionTile(
+            context,
+            icon: Icons.star,
+            title: 'Subscription',
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SubscriptionSettingPage(),
+                ),
+              );
+            },
+          ),
           _buildOptionTile(
             context,
             icon: Icons.shield_outlined,
@@ -91,6 +103,7 @@ class ProfilePage extends ConsumerWidget {
     BuildContext context, {
     required IconData icon,
     required String title,
+    VoidCallback? onTap,
   }) {
     final theme = Theme.of(context);
     return Container(
@@ -107,7 +120,7 @@ class ProfilePage extends ConsumerWidget {
           size: 16,
           color: Colors.white,
         ),
-        onTap: () {},
+        onTap: onTap,
       ),
     );
   }

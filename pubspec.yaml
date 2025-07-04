@@ -1,7 +1,7 @@
 name: sendtrain
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.02+3
 
 environment:
   sdk: '>=3.8.0 <4.0.0'
@@ -21,7 +21,7 @@ dependencies:
   firebase_auth: ^5.6.0
   cloud_firestore: ^5.6.9
   riverpod: ^2.6.1
-  freezed_annotation: ^3.0.0
+  freezed_annotation: ^2.4.1
   json_annotation: ^4.9.0
   google_sign_in: ^7.1.0
   sign_in_with_apple: ^7.0.1
@@ -30,15 +30,24 @@ dependencies:
   cloud_functions: ^5.0.1
   flutter_local_notifications: ^19.3.0
   material_symbols_icons: ^4.2815.1
+  timezone: ^0.10.1
+  purchases_flutter: ^8.10.5
+  purchases_ui_flutter: ^8.10.5
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  build_runner: ^2.5.4
-  freezed: ^3.0.6
-  json_serializable: ^6.9.5
+  riverpod_annotation: ^2.3.5
+  riverpod_generator: ^2.4.0
+  build_runner: ^2.4.9
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
   flutter_launcher_icons: ^0.14.4
+
+dependency_overrides:
+  freezed_annotation: ^2.4.1
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -63,3 +72,4 @@ flutter:
   assets:
     - assets/
     - assets/screens/
+    - .env

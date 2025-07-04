@@ -19,9 +19,9 @@ import 'package:sendtrain/widgets/shared/next_session_card.dart';
 // dev_dependencies:
 //   fl_chart: ^0.68.0
 
-class PlanPage2 extends ConsumerWidget {
+class PlanDetailView extends ConsumerWidget {
   final TrainingProgram program;
-  const PlanPage2({super.key, required this.program});
+  const PlanDetailView({super.key, required this.program});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -77,14 +77,12 @@ class _SuperPlanViewState extends State<SuperPlanView>
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  Map<DateTime, List<DailySession>> _events = {};
   late final AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _events = _getEventsForProgram(widget.program);
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -96,10 +94,6 @@ class _SuperPlanViewState extends State<SuperPlanView>
   void dispose() {
     _animationController.dispose();
     super.dispose();
-  }
-
-  List<DailySession> _getEventsForDay(DateTime day) {
-    return _events[DateTime(day.year, day.month, day.day)] ?? [];
   }
 
   @override
@@ -128,7 +122,7 @@ class _SuperPlanViewState extends State<SuperPlanView>
                       program: widget.program,
                       focusedDay: _focusedDay,
                       selectedDay: _selectedDay,
-                      events: _events,
+                      events: _getEventsForProgram(widget.program),
                       calendarFormat: _calendarFormat,
                       animationController: _animationController,
                       onDaySelected: (selectedDay, focusedDay) {
@@ -150,7 +144,13 @@ class _SuperPlanViewState extends State<SuperPlanView>
                       onPageChanged: (focusedDay) {
                         _focusedDay = focusedDay;
                       },
-                      getEventsForDay: _getEventsForDay,
+                      getEventsForDay: (day) =>
+                          _getEventsForProgram(widget.program)[DateTime(
+                            day.year,
+                            day.month,
+                            day.day,
+                          )] ??
+                          [],
                     )
                   : AgendaViewWithStats(
                       key: const ValueKey('agenda'),
@@ -389,7 +389,7 @@ class AgendaViewWithStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final schedule = program.weeklySchedule ?? [];
-    final sortedSchedule = schedule.toList()
+    final sortedSchedule = [...schedule]
       ..sort((a, b) => (a.week ?? 0).compareTo(b.week ?? 0));
 
     if (schedule.isEmpty) {
@@ -412,27 +412,46 @@ class AgendaViewWithStats extends StatelessWidget {
           child: ProgramInfoCard(program: program),
         ),
         NextSessionCard(program: program),
-        ...sortedSchedule.asMap().entries.map((entry) {
-          final index = entry.key;
-          final currentSession = entry.value;
-
-          int? nextWeekStart;
-          if (index + 1 < sortedSchedule.length) {
-            nextWeekStart = sortedSchedule[index + 1].week;
-          }
-
-          final endWeek = (nextWeekStart != null
-              ? nextWeekStart - 1
-              : program.durationWeeks);
-
-          return WeekCard(
-            key: ValueKey('week_card_${currentSession.week}'),
-            weeklySession: currentSession,
-            endWeek: endWeek,
-          );
-        }),
+        ..._buildWeekCards(sortedSchedule, program.durationWeeks ?? 0),
       ],
     );
+  }
+
+  // Helper to create a WeekCard for every week, repeating the last defined
+  // weeklySession until a new one appears.
+  List<Widget> _buildWeekCards(List<WeeklySession> sorted, int durationWeeks) {
+    final List<Widget> cards = [];
+    if (sorted.isEmpty) return cards;
+
+    WeeklySession? active;
+    int idx = 0;
+
+    for (int w = 1; w <= durationWeeks; w++) {
+      if (idx < sorted.length && (sorted[idx].week ?? 0) == w) {
+        // Only update the active session if the new one has content.
+        if (sorted[idx].dailySessions != null &&
+            sorted[idx].dailySessions!.isNotEmpty) {
+          active = sorted[idx];
+        }
+        idx++;
+      }
+
+      if (active == null) continue;
+
+      cards.add(
+        WeekCard(
+          key: ValueKey('week_card_$w'),
+          weeklySession: WeeklySession(
+            week: w,
+            phase: active.phase,
+            weeklyFocus: active.weeklyFocus,
+            dailySessions: active.dailySessions,
+          ),
+          endWeek: w,
+        ),
+      );
+    }
+    return cards;
   }
 }
 
@@ -950,7 +969,6 @@ class DayTile extends StatelessWidget {
   }
 }
 
-// --- Copied and adapted from PlanDisplay3 ---
 class InteractiveCalendarView extends StatelessWidget {
   final TrainingProgram program;
   final DateTime focusedDay;
@@ -1292,44 +1310,45 @@ Map<DateTime, List<DailySession>> _getEventsForProgram(
   TrainingProgram program,
 ) {
   final Map<DateTime, List<DailySession>> events = {};
-  if (program.durationWeeks == null || program.durationWeeks == 0) {
-    return events;
-  }
+  final weeks = program.durationWeeks ?? 0;
+  final schedule = program.weeklySchedule ?? [];
+  if (weeks == 0 || schedule.isEmpty) return events;
 
-  final programStartDate = program.startedAt ?? DateTime.now();
+  final sorted = List<WeeklySession>.from(schedule)
+    ..sort((a, b) => (a.week ?? 0).compareTo(b.week ?? 0));
 
-  // Use the program's start date to determine the first day of the first week (e.g., Monday).
-  final startOfFirstProgramWeek = programStartDate.subtract(
-    Duration(days: programStartDate.weekday - 1),
+  final startMonday = (program.startedAt ?? DateTime.now()).subtract(
+    Duration(days: (program.startedAt ?? DateTime.now()).weekday - 1),
   );
 
-  // Iterate through every week of the program's duration
-  for (int week = 1; week <= program.durationWeeks!; week++) {
-    // Get the correct weekly session, filling in gaps
-    final weeklySession = program.getWeeklySessionForWeek(week);
+  // Pointer that always holds the last weeklySession that has non-empty dailySessions.
+  WeeklySession? activeSession;
+  int nextScheduleIdx = 0;
 
-    if (weeklySession != null) {
-      final weekOffset = week - 1;
-      weeklySession.dailySessions?.forEach((dailySession) {
-        final dayOfWeek = _dayOfWeekToInt(dailySession.dayOfTheWeek ?? '');
-        if (dayOfWeek != -1) {
-          // Calculate the session date for the current week.
-          final sessionDate = startOfFirstProgramWeek.add(
-            Duration(days: weekOffset * 7 + dayOfWeek - 1),
-          );
-          final dateOnly = DateTime(
-            sessionDate.year,
-            sessionDate.month,
-            sessionDate.day,
-          );
-          if (events[dateOnly] == null) {
-            events[dateOnly] = [];
-          }
-          events[dateOnly]!.add(dailySession);
-        }
-      });
+  for (int w = 1; w <= weeks; w++) {
+    // Bump the schedule index if the next defined week starts now.
+    if (nextScheduleIdx < sorted.length &&
+        (sorted[nextScheduleIdx].week ?? 0) == w) {
+      if (sorted[nextScheduleIdx].dailySessions != null &&
+          sorted[nextScheduleIdx].dailySessions!.isNotEmpty) {
+        activeSession = sorted[nextScheduleIdx];
+      }
+      nextScheduleIdx++;
+    }
+
+    // If we still don't have an activeSession with content, skip.
+    if (activeSession == null) continue;
+
+    final weekOffset = w - 1;
+    for (final session in activeSession.dailySessions!) {
+      final dow = _dayOfWeekToInt(session.dayOfTheWeek ?? '');
+      if (dow == -1) continue;
+      final date = startMonday.add(Duration(days: weekOffset * 7 + dow - 1));
+      final key = DateTime(date.year, date.month, date.day);
+      (events[key] ??= []).add(session);
     }
   }
+
   return events;
 }
 

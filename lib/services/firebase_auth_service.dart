@@ -20,6 +20,8 @@ class FirebaseAuthService {
   final FirebaseAuth _auth;
   final FirestoreService _firestoreService;
 
+  FirebaseAuth get auth => _auth;
+
   FirebaseAuthService(this._auth, this._firestoreService);
 
   Future<String?> signUpWithEmailAndPassword({
@@ -29,19 +31,14 @@ class FirebaseAuthService {
     required String lastName,
   }) async {
     try {
-      print('🔐 Starting signup process for: $email');
-
       final UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
       final user = userCredential.user;
       if (user != null) {
-        print('✅ Firebase Auth user created: ${user.uid}');
-
         // Update the user's profile with their name
         await user.updateDisplayName('$firstName $lastName');
         await user.reload();
-        print('✅ User display name updated');
 
         // Create user in firestore
         final newUser = UserModel(
@@ -51,18 +48,14 @@ class FirebaseAuthService {
           lastName: lastName,
         );
 
-        print('📄 Creating Firestore user document...');
         await _firestoreService.createUser(newUser);
-        print('✅ Firestore user document created successfully');
 
         // Give a moment for the auth state to propagate
         await Future.delayed(const Duration(milliseconds: 300));
-        print('✅ Signup process completed for: $email');
       }
 
       return null; // Sign up successful
     } on FirebaseAuthException catch (e) {
-      print('❌ Firebase Auth error during signup: ${e.code} - ${e.message}');
       // Return a user-friendly error message
       if (e.code == 'weak-password') {
         return 'The password provided is too weak.';
@@ -91,14 +84,10 @@ class FirebaseAuthService {
       // Trigger the authentication flow
       final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
 
-      print('🔵 Google credential received:');
-      print('  - Email: ${googleUser.email}');
-      print('  - Display Name: ${googleUser.displayName}');
-
       // Get authorization headers which contain the access token
       final Map<String, String>? authHeaders = await googleUser
           .authorizationClient
-          .authorizationHeaders([]);
+          .authorizationHeaders(['email', 'profile']);
 
       if (authHeaders == null) {
         print('❌ Failed to get authorization headers');

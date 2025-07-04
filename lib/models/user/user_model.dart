@@ -8,11 +8,12 @@ abstract class UserModel with _$UserModel {
   const factory UserModel({
     required String uid,
     String? firstName,
+    String? activeProgramId,
     String? lastName,
     String? email,
     String? password,
     String? photoUrl,
-    bool? isPremium,
+    @Default(false) bool isPremium,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

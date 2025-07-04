@@ -229,37 +229,38 @@ Map<DateTime, List<DailySession>> _getEventsForProgram(
   TrainingProgram program,
 ) {
   final Map<DateTime, List<DailySession>> events = {};
-  if (program.durationWeeks == null || program.durationWeeks == 0) {
-    return events;
-  }
+  final weeks = program.durationWeeks ?? 0;
+  final schedule = program.weeklySchedule ?? [];
+  if (weeks == 0 || schedule.isEmpty) return events;
 
-  final programStartDate = program.startedAt ?? DateTime.now();
-  final startOfFirstProgramWeek = programStartDate.subtract(
-    Duration(days: programStartDate.weekday - 1),
+  final sorted = List<WeeklySession>.from(schedule)
+    ..sort((a, b) => (a.week ?? 0).compareTo(b.week ?? 0));
+
+  final startMonday = (program.startedAt ?? DateTime.now()).subtract(
+    Duration(days: (program.startedAt ?? DateTime.now()).weekday - 1),
   );
 
-  for (int week = 1; week <= program.durationWeeks!; week++) {
-    final weeklySession = program.getWeeklySessionForWeek(week);
+  WeeklySession? activeSession;
+  int nextIdx = 0;
 
-    if (weeklySession != null) {
-      final weekOffset = week - 1;
-      weeklySession.dailySessions?.forEach((dailySession) {
-        final dayOfWeek = _dayOfWeekToInt(dailySession.dayOfTheWeek ?? '');
-        if (dayOfWeek != -1) {
-          final sessionDate = startOfFirstProgramWeek.add(
-            Duration(days: weekOffset * 7 + dayOfWeek - 1),
-          );
-          final dateOnly = DateTime(
-            sessionDate.year,
-            sessionDate.month,
-            sessionDate.day,
-          );
-          if (events[dateOnly] == null) {
-            events[dateOnly] = [];
-          }
-          events[dateOnly]!.add(dailySession);
-        }
-      });
+  for (int w = 1; w <= weeks; w++) {
+    if (nextIdx < sorted.length && (sorted[nextIdx].week ?? 0) == w) {
+      if (sorted[nextIdx].dailySessions != null &&
+          sorted[nextIdx].dailySessions!.isNotEmpty) {
+        activeSession = sorted[nextIdx];
+      }
+      nextIdx++;
+    }
+
+    if (activeSession == null) continue;
+
+    final offset = w - 1;
+    for (final s in activeSession.dailySessions!) {
+      final dow = _dayOfWeekToInt(s.dayOfTheWeek ?? '');
+      if (dow == -1) continue;
+      final date = startMonday.add(Duration(days: offset * 7 + dow - 1));
+      final key = DateTime(date.year, date.month, date.day);
+      (events[key] ??= []).add(s);
     }
   }
   return events;

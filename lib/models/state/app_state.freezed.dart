@@ -1,4 +1,3 @@
-// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -10,201 +9,176 @@ part of 'app_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
-// dart format off
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
+
 /// @nodoc
 mixin _$AppState {
+  UserModel? get user => throw _privateConstructorUsedError;
+  bool get isGeneratingPlan => throw _privateConstructorUsedError;
 
- UserModel? get user; List<TrainingProgram>? get trainingPrograms; TrainingProgram? get selectedTrainingProgram; bool get isGeneratingPlan; bool get isInitializing;
-/// Create a copy of AppState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$AppStateCopyWith<AppState> get copyWith => _$AppStateCopyWithImpl<AppState>(this as AppState, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppState&&(identical(other.user, user) || other.user == user)&&const DeepCollectionEquality().equals(other.trainingPrograms, trainingPrograms)&&(identical(other.selectedTrainingProgram, selectedTrainingProgram) || other.selectedTrainingProgram == selectedTrainingProgram)&&(identical(other.isGeneratingPlan, isGeneratingPlan) || other.isGeneratingPlan == isGeneratingPlan)&&(identical(other.isInitializing, isInitializing) || other.isInitializing == isInitializing));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,user,const DeepCollectionEquality().hash(trainingPrograms),selectedTrainingProgram,isGeneratingPlan,isInitializing);
-
-@override
-String toString() {
-  return 'AppState(user: $user, trainingPrograms: $trainingPrograms, selectedTrainingProgram: $selectedTrainingProgram, isGeneratingPlan: $isGeneratingPlan, isInitializing: $isInitializing)';
-}
-
-
+  /// Create a copy of AppState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $AppStateCopyWith<AppState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract mixin class $AppStateCopyWith<$Res>  {
-  factory $AppStateCopyWith(AppState value, $Res Function(AppState) _then) = _$AppStateCopyWithImpl;
-@useResult
-$Res call({
- UserModel? user, List<TrainingProgram>? trainingPrograms, TrainingProgram? selectedTrainingProgram, bool isGeneratingPlan, bool isInitializing
-});
+abstract class $AppStateCopyWith<$Res> {
+  factory $AppStateCopyWith(AppState value, $Res Function(AppState) then) =
+      _$AppStateCopyWithImpl<$Res, AppState>;
+  @useResult
+  $Res call({UserModel? user, bool isGeneratingPlan});
 
-
-$UserModelCopyWith<$Res>? get user;$TrainingProgramCopyWith<$Res>? get selectedTrainingProgram;
-
+  $UserModelCopyWith<$Res>? get user;
 }
+
 /// @nodoc
-class _$AppStateCopyWithImpl<$Res>
+class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
     implements $AppStateCopyWith<$Res> {
-  _$AppStateCopyWithImpl(this._self, this._then);
+  _$AppStateCopyWithImpl(this._value, this._then);
 
-  final AppState _self;
-  final $Res Function(AppState) _then;
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
-/// Create a copy of AppState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? user = freezed,Object? trainingPrograms = freezed,Object? selectedTrainingProgram = freezed,Object? isGeneratingPlan = null,Object? isInitializing = null,}) {
-  return _then(_self.copyWith(
-user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as UserModel?,trainingPrograms: freezed == trainingPrograms ? _self.trainingPrograms : trainingPrograms // ignore: cast_nullable_to_non_nullable
-as List<TrainingProgram>?,selectedTrainingProgram: freezed == selectedTrainingProgram ? _self.selectedTrainingProgram : selectedTrainingProgram // ignore: cast_nullable_to_non_nullable
-as TrainingProgram?,isGeneratingPlan: null == isGeneratingPlan ? _self.isGeneratingPlan : isGeneratingPlan // ignore: cast_nullable_to_non_nullable
-as bool,isInitializing: null == isInitializing ? _self.isInitializing : isInitializing // ignore: cast_nullable_to_non_nullable
-as bool,
-  ));
-}
-/// Create a copy of AppState
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$UserModelCopyWith<$Res>? get user {
-    if (_self.user == null) {
-    return null;
+  /// Create a copy of AppState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? user = freezed, Object? isGeneratingPlan = null}) {
+    return _then(
+      _value.copyWith(
+            user: freezed == user
+                ? _value.user
+                : user // ignore: cast_nullable_to_non_nullable
+                      as UserModel?,
+            isGeneratingPlan: null == isGeneratingPlan
+                ? _value.isGeneratingPlan
+                : isGeneratingPlan // ignore: cast_nullable_to_non_nullable
+                      as bool,
+          )
+          as $Val,
+    );
   }
 
-  return $UserModelCopyWith<$Res>(_self.user!, (value) {
-    return _then(_self.copyWith(user: value));
-  });
-}/// Create a copy of AppState
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$TrainingProgramCopyWith<$Res>? get selectedTrainingProgram {
-    if (_self.selectedTrainingProgram == null) {
-    return null;
+  /// Create a copy of AppState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $UserModelCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
-
-  return $TrainingProgramCopyWith<$Res>(_self.selectedTrainingProgram!, (value) {
-    return _then(_self.copyWith(selectedTrainingProgram: value));
-  });
-}
-}
-
-
-/// @nodoc
-
-
-class _AppState implements AppState {
-  const _AppState({this.user, final  List<TrainingProgram>? trainingPrograms, this.selectedTrainingProgram, this.isGeneratingPlan = false, this.isInitializing = true}): _trainingPrograms = trainingPrograms;
-  
-
-@override final  UserModel? user;
- final  List<TrainingProgram>? _trainingPrograms;
-@override List<TrainingProgram>? get trainingPrograms {
-  final value = _trainingPrograms;
-  if (value == null) return null;
-  if (_trainingPrograms is EqualUnmodifiableListView) return _trainingPrograms;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(value);
-}
-
-@override final  TrainingProgram? selectedTrainingProgram;
-@override@JsonKey() final  bool isGeneratingPlan;
-@override@JsonKey() final  bool isInitializing;
-
-/// Create a copy of AppState
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$AppStateCopyWith<_AppState> get copyWith => __$AppStateCopyWithImpl<_AppState>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppState&&(identical(other.user, user) || other.user == user)&&const DeepCollectionEquality().equals(other._trainingPrograms, _trainingPrograms)&&(identical(other.selectedTrainingProgram, selectedTrainingProgram) || other.selectedTrainingProgram == selectedTrainingProgram)&&(identical(other.isGeneratingPlan, isGeneratingPlan) || other.isGeneratingPlan == isGeneratingPlan)&&(identical(other.isInitializing, isInitializing) || other.isInitializing == isInitializing));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,user,const DeepCollectionEquality().hash(_trainingPrograms),selectedTrainingProgram,isGeneratingPlan,isInitializing);
-
-@override
-String toString() {
-  return 'AppState(user: $user, trainingPrograms: $trainingPrograms, selectedTrainingProgram: $selectedTrainingProgram, isGeneratingPlan: $isGeneratingPlan, isInitializing: $isInitializing)';
-}
-
-
 }
 
 /// @nodoc
-abstract mixin class _$AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
-  factory _$AppStateCopyWith(_AppState value, $Res Function(_AppState) _then) = __$AppStateCopyWithImpl;
-@override @useResult
-$Res call({
- UserModel? user, List<TrainingProgram>? trainingPrograms, TrainingProgram? selectedTrainingProgram, bool isGeneratingPlan, bool isInitializing
-});
+abstract class _$$AppStateImplCopyWith<$Res>
+    implements $AppStateCopyWith<$Res> {
+  factory _$$AppStateImplCopyWith(
+    _$AppStateImpl value,
+    $Res Function(_$AppStateImpl) then,
+  ) = __$$AppStateImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({UserModel? user, bool isGeneratingPlan});
 
-
-@override $UserModelCopyWith<$Res>? get user;@override $TrainingProgramCopyWith<$Res>? get selectedTrainingProgram;
-
+  @override
+  $UserModelCopyWith<$Res>? get user;
 }
+
 /// @nodoc
-class __$AppStateCopyWithImpl<$Res>
-    implements _$AppStateCopyWith<$Res> {
-  __$AppStateCopyWithImpl(this._self, this._then);
+class __$$AppStateImplCopyWithImpl<$Res>
+    extends _$AppStateCopyWithImpl<$Res, _$AppStateImpl>
+    implements _$$AppStateImplCopyWith<$Res> {
+  __$$AppStateImplCopyWithImpl(
+    _$AppStateImpl _value,
+    $Res Function(_$AppStateImpl) _then,
+  ) : super(_value, _then);
 
-  final _AppState _self;
-  final $Res Function(_AppState) _then;
-
-/// Create a copy of AppState
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? user = freezed,Object? trainingPrograms = freezed,Object? selectedTrainingProgram = freezed,Object? isGeneratingPlan = null,Object? isInitializing = null,}) {
-  return _then(_AppState(
-user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as UserModel?,trainingPrograms: freezed == trainingPrograms ? _self._trainingPrograms : trainingPrograms // ignore: cast_nullable_to_non_nullable
-as List<TrainingProgram>?,selectedTrainingProgram: freezed == selectedTrainingProgram ? _self.selectedTrainingProgram : selectedTrainingProgram // ignore: cast_nullable_to_non_nullable
-as TrainingProgram?,isGeneratingPlan: null == isGeneratingPlan ? _self.isGeneratingPlan : isGeneratingPlan // ignore: cast_nullable_to_non_nullable
-as bool,isInitializing: null == isInitializing ? _self.isInitializing : isInitializing // ignore: cast_nullable_to_non_nullable
-as bool,
-  ));
+  /// Create a copy of AppState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? user = freezed, Object? isGeneratingPlan = null}) {
+    return _then(
+      _$AppStateImpl(
+        user: freezed == user
+            ? _value.user
+            : user // ignore: cast_nullable_to_non_nullable
+                  as UserModel?,
+        isGeneratingPlan: null == isGeneratingPlan
+            ? _value.isGeneratingPlan
+            : isGeneratingPlan // ignore: cast_nullable_to_non_nullable
+                  as bool,
+      ),
+    );
+  }
 }
 
-/// Create a copy of AppState
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$UserModelCopyWith<$Res>? get user {
-    if (_self.user == null) {
-    return null;
+/// @nodoc
+
+class _$AppStateImpl implements _AppState {
+  const _$AppStateImpl({this.user, this.isGeneratingPlan = false});
+
+  @override
+  final UserModel? user;
+  @override
+  @JsonKey()
+  final bool isGeneratingPlan;
+
+  @override
+  String toString() {
+    return 'AppState(user: $user, isGeneratingPlan: $isGeneratingPlan)';
   }
 
-  return $UserModelCopyWith<$Res>(_self.user!, (value) {
-    return _then(_self.copyWith(user: value));
-  });
-}/// Create a copy of AppState
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$TrainingProgramCopyWith<$Res>? get selectedTrainingProgram {
-    if (_self.selectedTrainingProgram == null) {
-    return null;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AppStateImpl &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.isGeneratingPlan, isGeneratingPlan) ||
+                other.isGeneratingPlan == isGeneratingPlan));
   }
 
-  return $TrainingProgramCopyWith<$Res>(_self.selectedTrainingProgram!, (value) {
-    return _then(_self.copyWith(selectedTrainingProgram: value));
-  });
-}
+  @override
+  int get hashCode => Object.hash(runtimeType, user, isGeneratingPlan);
+
+  /// Create a copy of AppState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AppStateImplCopyWith<_$AppStateImpl> get copyWith =>
+      __$$AppStateImplCopyWithImpl<_$AppStateImpl>(this, _$identity);
 }
 
-// dart format on
+abstract class _AppState implements AppState {
+  const factory _AppState({
+    final UserModel? user,
+    final bool isGeneratingPlan,
+  }) = _$AppStateImpl;
+
+  @override
+  UserModel? get user;
+  @override
+  bool get isGeneratingPlan;
+
+  /// Create a copy of AppState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AppStateImplCopyWith<_$AppStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}

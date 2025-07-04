@@ -8,10 +8,7 @@ part 'app_state.freezed.dart';
 abstract class AppState with _$AppState {
   const factory AppState({
     UserModel? user,
-    List<TrainingProgram>? trainingPrograms,
-    TrainingProgram? selectedTrainingProgram,
     @Default(false) bool isGeneratingPlan,
-    @Default(true) bool isInitializing,
   }) = _AppState;
 
   factory AppState.initial() => const AppState();
